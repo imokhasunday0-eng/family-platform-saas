@@ -1,0 +1,410 @@
+generator client {
+  provider   = "prisma-client-js"
+  output     = "../generated/prisma"
+  engineType = "client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------- Better Auth ----------
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  issuer                String?
+  userId                String
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([providerId, accountId])
+  @@index([userId])
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  userId     String?
+
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([identifier])
+}
+
+// ---------- Identity & Family ----------
+
+model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  passwordHash  String?
+  name          String
+  emailVerified Boolean  @default(false)
+  image         String?
+  avatarUrl     String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  memberships      FamilyMember[]
+  sessions         Session[]
+  accounts         Account[]
+  verifications    Verification[]
+  choreAssignments ChoreAssignment[]
+  messages         Message[]
+  notes            Note[]
+  notifications    Notification[]
+  activityLogs     ActivityLog[]
+  expenses         Expense[]
+  incomes          Income[]
+}
+
+model Family {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+
+  members        FamilyMember[]
+  invitations    Invitation[]
+  calendarEvents CalendarEvent[]
+  mealPlans      MealPlan[]
+  groceryLists   GroceryList[]
+  chores         Chore[]
+  budgets        Budget[]
+  conversations  Conversation[]
+  notes          Note[]
+  activityLogs   ActivityLog[]
+  settings       Settings?
+}
+
+model FamilyMember {
+  id       String @id @default(cuid())
+  userId   String
+  familyId String
+  role     Role   @default(MEMBER)
+  points   Int    @default(0)
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  family Family @relation(fields: [familyId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, familyId])
+}
+
+enum Role {
+  OWNER
+  ADMIN
+  MEMBER
+  CHILD
+}
+
+model Invitation {
+  id         String    @id @default(cuid())
+  familyId   String
+  email      String
+  role       Role      @default(MEMBER)
+  token      String    @unique
+  acceptedAt DateTime?
+  createdAt  DateTime  @default(now())
+
+  family Family @relation(fields: [familyId], references: [id], onDelete: Cascade)
+}
+
+// ---------- Calendar ----------
+
+model CalendarEvent {
+  id          String   @id @default(cuid())
+  familyId    String
+  title       String
+  description String?
+  location    String?
+  startsAt    DateTime
+  endsAt      DateTime
+  allDay      Boolean  @default(false)
+  color       String?
+  recurrence  String?
+  createdAt   DateTime @default(now())
+
+  family    Family     @relation(fields: [familyId], references: [id], onDelete: Cascade)
+  reminders Reminder[]
+}
+
+model Reminder {
+  id       String   @id @default(cuid())
+  eventId  String
+  remindAt DateTime
+  sent     Boolean  @default(false)
+
+  event CalendarEvent @relation(fields: [eventId], references: [id], onDelete: Cascade)
+}
+
+// ---------- Meal Planner ----------
+
+model Recipe {
+  id           String   @id @default(cuid())
+  title        String
+  instructions String
+  nutrition    Json?
+  isFavorite   Boolean  @default(false)
+  createdAt    DateTime @default(now())
+
+  ingredients Ingredient[]
+  mealPlans   MealPlan[]
+}
+
+model Ingredient {
+  id       String  @id @default(cuid())
+  recipeId String
+  name     String
+  quantity String?
+  unit     String?
+
+  recipe Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+}
+
+model MealPlan {
+  id       String   @id @default(cuid())
+  familyId String
+  recipeId String?
+  date     DateTime
+  mealType String // breakfast | lunch | dinner | snack
+
+  family Family  @relation(fields: [familyId], references: [id], onDelete: Cascade)
+  recipe Recipe? @relation(fields: [recipeId], references: [id])
+}
+
+// ---------- Grocery ----------
+
+model GroceryList {
+  id        String   @id @default(cuid())
+  familyId  String
+  name      String   @default("Groceries")
+  createdAt DateTime @default(now())
+
+  family Family        @relation(fields: [familyId], references: [id], onDelete: Cascade)
+  items  GroceryItem[]
+}
+
+model GroceryItem {
+  id        String  @id @default(cuid())
+  listId    String
+  name      String
+  quantity  String?
+  category  String?
+  store     String?
+  purchased Boolean @default(false)
+  barcode   String?
+
+  list GroceryList @relation(fields: [listId], references: [id], onDelete: Cascade)
+}
+
+// ---------- Chores ----------
+
+model Chore {
+  id          String   @id @default(cuid())
+  familyId    String
+  title       String
+  description String?
+  points      Int      @default(0)
+  recurrence  String?
+  createdAt   DateTime @default(now())
+
+  family      Family            @relation(fields: [familyId], references: [id], onDelete: Cascade)
+  assignments ChoreAssignment[]
+}
+
+model ChoreAssignment {
+  id          String    @id @default(cuid())
+  choreId     String
+  userId      String
+  dueDate     DateTime?
+  completedAt DateTime?
+
+  chore Chore @relation(fields: [choreId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// ---------- Budget ----------
+
+model Budget {
+  id       String @id @default(cuid())
+  familyId String
+  name     String
+  month    Int
+  year     Int
+
+  family   Family        @relation(fields: [familyId], references: [id], onDelete: Cascade)
+  expenses Expense[]
+  incomes  Income[]
+  goals    SavingsGoal[]
+  bills    Bill[]
+}
+
+model Expense {
+  id       String   @id @default(cuid())
+  budgetId String
+  userId   String?
+  category String
+  amount   Decimal  @db.Decimal(12, 2)
+  note     String?
+  date     DateTime
+
+  budget Budget @relation(fields: [budgetId], references: [id], onDelete: Cascade)
+  user   User?  @relation(fields: [userId], references: [id])
+}
+
+model Income {
+  id       String   @id @default(cuid())
+  budgetId String
+  userId   String?
+  source   String
+  amount   Decimal  @db.Decimal(12, 2)
+  date     DateTime
+
+  budget Budget @relation(fields: [budgetId], references: [id], onDelete: Cascade)
+  user   User?  @relation(fields: [userId], references: [id])
+}
+
+model SavingsGoal {
+  id           String  @id @default(cuid())
+  budgetId     String
+  name         String
+  targetAmount Decimal @db.Decimal(12, 2)
+  savedAmount  Decimal @default(0) @db.Decimal(12, 2)
+
+  budget Budget @relation(fields: [budgetId], references: [id], onDelete: Cascade)
+}
+
+model Bill {
+  id       String   @id @default(cuid())
+  budgetId String
+  name     String
+  amount   Decimal  @db.Decimal(12, 2)
+  dueDate  DateTime
+  paid     Boolean  @default(false)
+
+  budget Budget @relation(fields: [budgetId], references: [id], onDelete: Cascade)
+}
+
+// ---------- Chat ----------
+
+model Conversation {
+  id        String   @id @default(cuid())
+  familyId  String
+  name      String?
+  createdAt DateTime @default(now())
+
+  family   Family    @relation(fields: [familyId], references: [id], onDelete: Cascade)
+  messages Message[]
+}
+
+model Message {
+  id             String   @id @default(cuid())
+  conversationId String
+  userId         String
+  content        String
+  createdAt      DateTime @default(now())
+
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  attachments  Attachment[]
+}
+
+model Attachment {
+  id        String @id @default(cuid())
+  messageId String
+  url       String
+  type      String
+
+  message Message @relation(fields: [messageId], references: [id], onDelete: Cascade)
+}
+
+// ---------- Notes ----------
+
+model Note {
+  id        String   @id @default(cuid())
+  familyId  String
+  userId    String
+  title     String
+  content   String
+  category  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  family Family @relation(fields: [familyId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// ---------- Notifications & Activity ----------
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  title     String
+  body      String?
+  read      Boolean  @default(false)
+  channel   String // push | email | in_app
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model ActivityLog {
+  id        String   @id @default(cuid())
+  familyId  String
+  userId    String
+  action    String
+  metadata  Json?
+  createdAt DateTime @default(now())
+
+  family Family @relation(fields: [familyId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Settings {
+  id       String @id @default(cuid())
+  familyId String @unique
+  theme    String @default("system")
+  timezone String @default("UTC")
+  currency String @default("USD")
+
+  notificationsInApp Boolean @default(true)
+  notificationsEmail Boolean @default(false)
+  notificationsPush  Boolean @default(false)
+
+  eventReminders   Boolean @default(true)
+  choreReminders   Boolean @default(true)
+  mealReminders    Boolean @default(true)
+  groceryReminders Boolean @default(true)
+  budgetAlerts     Boolean @default(true)
+
+  family Family @relation(fields: [familyId], references: [id], onDelete: Cascade)
+}
