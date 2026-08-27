@@ -29,5 +29,8 @@ export const auth = betterAuth({
 
   baseURL: appURL,
 
-  trustedOrigins: [appURL],
+  trustedOrigins: [
+    appURL,
+    "https://family-platform-saas-*.vercel.app",
+  ],
 });
