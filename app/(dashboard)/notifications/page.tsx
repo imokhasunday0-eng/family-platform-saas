@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 type Notification = {
   id: string;
@@ -8,12 +9,13 @@ type Notification = {
   body: string | null;
   read: boolean;
   channel: string;
+  link: string | null;
   createdAt: string;
 };
 
 function getIcon(notification: Notification) {
   const text =
-    `${notification.title} ${notification.body ?? ""}`.toLowerCase();
+    (notification.title + " " + (notification.body ?? "")).toLowerCase();
 
   if (text.includes("chore")) return "✓";
   if (text.includes("event") || text.includes("calendar")) return "◷";
@@ -26,17 +28,14 @@ function getIcon(notification: Notification) {
 
 function getIconStyle(notification: Notification) {
   const text =
-    `${notification.title} ${notification.body ?? ""}`.toLowerCase();
+    (notification.title + " " + (notification.body ?? "")).toLowerCase();
 
   if (text.includes("chore"))
     return "bg-blue-100 text-blue-600 dark:bg-blue-950/50 dark:text-blue-400";
-
   if (text.includes("event") || text.includes("calendar"))
     return "bg-violet-100 text-violet-600 dark:bg-violet-950/50 dark:text-violet-400";
-
   if (text.includes("grocery"))
     return "bg-emerald-100 text-emerald-600 dark:bg-emerald-950/50 dark:text-emerald-400";
-
   if (text.includes("budget") || text.includes("₦"))
     return "bg-amber-100 text-amber-600 dark:bg-amber-950/50 dark:text-amber-400";
 
@@ -53,14 +52,18 @@ function formatTime(date: string) {
   const days = Math.floor(diff / 86400000);
 
   if (minutes < 1) return "Just now";
-  if (minutes < 60) return `${minutes} minute${minutes === 1 ? "" : "s"} ago`;
-  if (hours < 24) return `${hours} hour${hours === 1 ? "" : "s"} ago`;
-  if (days < 7) return `${days} day${days === 1 ? "" : "s"} ago`;
+  if (minutes < 60)
+    return minutes + (minutes === 1 ? " minute ago" : " minutes ago");
+  if (hours < 24)
+    return hours + (hours === 1 ? " hour ago" : " hours ago");
+  if (days < 7)
+    return days + (days === 1 ? " day ago" : " days ago");
 
   return value.toLocaleDateString();
 }
 
 export default function NotificationsPage() {
+  const router = useRouter();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -108,6 +111,38 @@ export default function NotificationsPage() {
     );
 
     setUnreadCount((count) => Math.max(0, count - 1));
+    window.dispatchEvent(new Event("notifications-changed"));
+  };
+
+  const handleNotificationClick = async (
+    notification: Notification
+  ) => {
+    await markAsRead(notification.id);
+
+    if (notification.link) {
+      router.push(notification.link);
+    }
+  };
+
+  const deleteNotification = async (id: string) => {
+    const res = await fetch("/api/notifications", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id }),
+    });
+
+    if (!res.ok) return;
+
+    setNotifications((current) => {
+      const removed = current.find((item) => item.id === id);
+      if (removed && !removed.read) {
+        setUnreadCount((count) => Math.max(0, count - 1));
+      }
+      return current.filter((item) => item.id !== id);
+    });
+    window.dispatchEvent(new Event("notifications-changed"));
   };
 
   const markAllAsRead = async () => {
@@ -131,6 +166,7 @@ export default function NotificationsPage() {
     );
 
     setUnreadCount(0);
+    window.dispatchEvent(new Event("notifications-changed"));
   };
 
   return (
@@ -207,20 +243,21 @@ export default function NotificationsPage() {
         ) : (
           <div className="divide-y divide-slate-100 dark:divide-slate-800">
             {notifications.map((notification) => (
-              <button
+              <div
                 key={notification.id}
-                type="button"
-                onClick={() => markAsRead(notification.id)}
-                className={`flex w-full items-start gap-4 px-5 py-5 text-left transition ${
-                  !notification.read
+                onClick={() => handleNotificationClick(notification)}
+                className={
+                  "group flex w-full cursor-pointer items-start gap-4 px-5 py-5 text-left transition " +
+                  (!notification.read
                     ? "bg-blue-50/40 hover:bg-blue-50 dark:bg-blue-950/10 dark:hover:bg-blue-950/20"
-                    : "hover:bg-slate-50 dark:hover:bg-slate-800/40"
-                }`}
+                    : "hover:bg-slate-50 dark:hover:bg-slate-800/40")
+                }
               >
                 <div
-                  className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-sm font-bold ${getIconStyle(
-                    notification
-                  )}`}
+                  className={
+                    "flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-sm font-bold " +
+                    getIconStyle(notification)
+                  }
                 >
                   {getIcon(notification)}
                 </div>
@@ -244,9 +281,39 @@ export default function NotificationsPage() {
 
                   <p className="mt-2 text-xs font-medium text-slate-400 dark:text-slate-500">
                     {formatTime(notification.createdAt)}
+                    {notification.link && (
+                      <span className="ml-2 font-semibold text-blue-500">
+                        Click to open →
+                      </span>
+                    )}
                   </p>
                 </div>
-              </button>
+
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    deleteNotification(notification.id);
+                  }}
+                  aria-label="Delete notification"
+                  className="shrink-0 rounded-lg p-2 text-slate-400 transition hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950/40 dark:hover:text-red-400"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                    />
+                  </svg>
+                </button>
+              </div>
             ))}
           </div>
         )}

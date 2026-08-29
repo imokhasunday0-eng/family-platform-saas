@@ -10,6 +10,21 @@ export const metadata: Metadata = {
   description: "Your family's all-in-one platform",
 };
 
+const themeScript = `
+(function () {
+  try {
+    var theme = localStorage.getItem("theme") || "system";
+    var isDark =
+      theme === "dark" ||
+      (theme === "system" &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches);
+
+    document.documentElement.classList.toggle("dark", isDark);
+    document.documentElement.style.colorScheme = isDark ? "dark" : "light";
+  } catch (e) {}
+})();
+`;
+
 export default function RootLayout({
   children,
 }: {
@@ -17,9 +32,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-  
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body className="antialiased">{children}</body>
     </html>
   );
 }
-

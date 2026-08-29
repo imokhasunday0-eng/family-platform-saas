@@ -8,7 +8,8 @@ import {
 import { auth } from "@/server/auth/auth";
 import { DashboardNav } from "@/components/dashboard-nav";
 import { MobileDrawer } from "@/components/mobile-drawer";
-import { prisma } from "@/lib/prisma";
+import { NotificationBell } from "@/components/notification-bell";
+import { AmbientBackground } from "@/components/ambient-background";
 
 const bottomNav = [
   { label: "Notifications", href: "/notifications", icon: Bell },
@@ -32,15 +33,10 @@ export default async function DashboardLayout({
       .slice(0, 2)
       .toUpperCase() || "U";
 
-  const unreadNotificationCount = await prisma.notification.count({
-    where: {
-      userId: session.user.id,
-      read: false,
-    },
-  });
-
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <>
+      <AmbientBackground />
+      <div className="relative z-10 min-h-screen text-foreground">
       {/* Sidebar (desktop only) */}
       <aside className="fixed inset-y-0 left-0 z-40 hidden w-[250px] border-r border-border bg-card md:flex md:flex-col">
         <div className="flex h-[76px] items-center border-b border-border px-6">
@@ -124,16 +120,7 @@ export default async function DashboardLayout({
           </div>
 
           <div className="flex items-center gap-3">
-            <Link
-              href="/notifications"
-              className="relative flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted-foreground transition hover:bg-muted"
-              aria-label="Notifications"
-            >
-              <Bell className="h-[17px] w-[17px]" />
-              <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-blue-600 px-1 text-[10px] font-bold leading-none text-white shadow-sm">
-                {unreadNotificationCount}
-              </span>
-            </Link>
+            <NotificationBell />
 
             <div className="hidden h-7 w-px bg-border sm:block" />
 
@@ -151,6 +138,7 @@ export default async function DashboardLayout({
         <main className="pb-24 md:pb-10">{children}</main>
       </div>
     </div>
+    </>
   );
 }
 

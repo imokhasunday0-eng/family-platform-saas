@@ -14,11 +14,12 @@ export default async function NotesPage() {
 
   const notes = await prisma.note.findMany({
     where: { familyId: membership.familyId },
-    orderBy: { createdAt: "desc" },
+    orderBy: [{ pinned: "desc" }, { updatedAt: "desc" }],
+    include: { todos: true },
   });
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-amber-50 via-amber-100 to-orange-100 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
+    <main className="min-h-screen">
       <div className="mx-auto max-w-3xl px-4 py-7 sm:px-6 md:py-10">
         <p className="text-xs font-bold uppercase tracking-[0.14em] text-amber-600/70">
           Shared space
@@ -27,7 +28,7 @@ export default async function NotesPage() {
           Family notes
         </h1>
         <p className="mt-2 text-xs text-slate-400">
-          Sticky notes for the whole family — reminders, ideas, shopping lists.
+          Tap a note to open it, edit it, or add a to-do list.
         </p>
 
         <div className="mt-6">
@@ -37,6 +38,9 @@ export default async function NotesPage() {
               title: n.title,
               content: n.content,
               category: n.category,
+              pinned: n.pinned,
+              todoTotal: n.todos.length,
+              todoDone: n.todos.filter((t) => t.done).length,
             }))}
           />
         </div>
@@ -44,4 +48,3 @@ export default async function NotesPage() {
     </main>
   );
 }
-

@@ -55,7 +55,7 @@ export async function POST(req: Request) {
     : null;
 
   const dueDate = body.dueDate
-    ? new Date(`${body.dueDate}T12:00`)
+    ? new Date(String(body.dueDate) + "T12:00")
     : null;
 
   let assigneeUserId: string | null = null;
@@ -90,6 +90,27 @@ export async function POST(req: Request) {
         : undefined,
     },
   });
+
+  // Notify the assignee that a chore was assigned to them.
+  if (assigneeUserId && assigneeUserId !== ctx.session.user.id) {
+    try {
+      await prisma.notification.create({
+        data: {
+          userId: assigneeUserId,
+          title: "You have been assigned a chore",
+          body:
+            title +
+            " - " +
+            points +
+            " points. Check your chores page for details.",
+          link: "/chores",
+          channel: "in_app",
+        },
+      });
+    } catch (error) {
+      console.error("Notification creation failed:", error);
+    }
+  }
 
   return NextResponse.json({
     ok: true,
@@ -135,7 +156,7 @@ export async function PATCH(req: Request) {
     );
   }
 
-  // Assigned chore
+  // Assigned chore: mark the assignment complete and award points.
   if (chore.assignments.length > 0) {
     const assignment = chore.assignments[0];
 
@@ -168,22 +189,104 @@ export async function PATCH(req: Request) {
         },
       },
     });
+  } else {
+    // Unassigned chore: the person completing it gets an assignment
+    // record with the completion date, and earns the points.
+    await prisma.choreAssignment.create({
+      data: {
+        choreId: chore.id,
+        userId: ctx.session.user.id,
+        completedAt: new Date(),
+      },
+    });
+
+    await prisma.familyMember.update({
+      where: {
+        userId_familyId: {
+          userId: ctx.session.user.id,
+          familyId: ctx.membership.familyId,
+        },
+      },
+      data: {
+        points: {
+          increment: chore.points,
+        },
+      },
+    });
   }
 
   // Notify the family after successful completion.
-  // The notification helper currently sends to all family members.
   try {
     await notifyFamilyMembers({
       familyId: ctx.membership.familyId,
       title: "Chore completed",
-      body: `${chore.title} was completed and ${chore.points} points were awarded.`,
+      body:
+        chore.title +
+        " was completed and " +
+        chore.points +
+        " points were awarded.",
     });
   } catch (error) {
-    // Notification failure must never prevent chore completion.
     console.error("Notification creation failed:", error);
   }
 
   return NextResponse.json({
     ok: true,
   });
+}
+
+// Delete a chore (only completed chores can be deleted)
+export async function DELETE(req: Request) {
+  const ctx = await getContext();
+
+  if (!ctx) {
+    return NextResponse.json(
+      { error: "Unauthorized" },
+      { status: 401 }
+    );
+  }
+
+  const body = await req.json();
+  const id = String(body.id || "");
+
+  if (!id) {
+    return NextResponse.json(
+      { error: "id required" },
+      { status: 400 }
+    );
+  }
+
+  const chore = await prisma.chore.findFirst({
+    where: {
+      id,
+      familyId: ctx.membership.familyId,
+    },
+    include: {
+      assignments: true,
+    },
+  });
+
+  if (!chore) {
+    return NextResponse.json(
+      { error: "Chore not found" },
+      { status: 404 }
+    );
+  }
+
+  const isCompleted =
+    chore.assignments.length > 0 &&
+    chore.assignments[0].completedAt !== null;
+
+  if (!isCompleted) {
+    return NextResponse.json(
+      { error: "Only completed chores can be deleted" },
+      { status: 400 }
+    );
+  }
+
+  await prisma.chore.delete({
+    where: { id: chore.id },
+  });
+
+  return NextResponse.json({ ok: true });
 }

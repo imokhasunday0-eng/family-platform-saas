@@ -87,7 +87,7 @@ export function OverviewCard({
           <Icon className="h-[20px] w-[20px]" />
         </div>
 
-        <div className="flex h-8 w-8 items-center justify-center rounded-full text-slate-300 transition group-hover:bg-slate-100 dark:group-hover:bg-slate-800">
+        <div className="flex h-8 w-8 items-center justify-center rounded-full text-slate-300 transition group-hover:bg-slate-100 dark:group-hover:bg-slate-800 dark:bg-slate-800">
           <ArrowUpRight
             className={cn("h-4 w-4 transition", s.text)}
           />

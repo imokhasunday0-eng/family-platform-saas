@@ -223,3 +223,31 @@
   background: hsl(220 15% 75%);
 }
 
+
+/* Ambient background blob drift */
+@keyframes ambient-drift-1 {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(220px, 160px) scale(1.6); }
+}
+@keyframes ambient-drift-2 {
+  from { transform: translate(0, 0) scale(1.1); }
+  to   { transform: translate(-200px, 220px) scale(1.5); }
+}
+@keyframes ambient-drift-3 {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(180px, -200px) scale(1.6); }
+}
+
+@keyframes doodle-float {
+  0%   { transform: translate(0, 0) rotate(0deg); }
+  25%  { transform: translate(22px, -32px) rotate(1.4deg); }
+  50%  { transform: translate(-8px, -50px) rotate(-1.2deg); }
+  75%  { transform: translate(-30px, -18px) rotate(1deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+.drift-1 { animation: ambient-drift-1 30s ease-in-out infinite alternate; }
+.drift-2 { animation: ambient-drift-2 26s ease-in-out infinite alternate; }
+.drift-3 { animation: ambient-drift-3 34s ease-in-out infinite alternate; }
+.doodle-a { animation: doodle-float 12s ease-in-out infinite; }
+.doodle-b { animation: doodle-float 16s ease-in-out infinite; }

@@ -349,14 +349,16 @@ model Attachment {
 // ---------- Notes ----------
 
 model Note {
-  id        String   @id @default(cuid())
+  id        String     @id @default(cuid())
   familyId  String
   userId    String
   title     String
   content   String
   category  String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  pinned    Boolean    @default(false)
+  todos     NoteTodo[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
 
   family Family @relation(fields: [familyId], references: [id], onDelete: Cascade)
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -370,7 +372,8 @@ model Notification {
   title     String
   body      String?
   read      Boolean  @default(false)
-  channel   String // push | email | in_app
+  channel   String // push | email | in_app  
+  link      String? // where clicking the notification goes, e.g. /chat
   createdAt DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -406,4 +409,16 @@ model Settings {
   budgetAlerts     Boolean @default(true)
 
   family Family @relation(fields: [familyId], references: [id], onDelete: Cascade)
+}
+
+// ---------- Note to-do items ----------
+
+model NoteTodo {
+  id       String  @id @default(cuid())
+  noteId   String
+  content  String
+  done     Boolean @default(false)
+  position Int     @default(0)
+
+  note Note @relation(fields: [noteId], references: [id], onDelete: Cascade)
 }

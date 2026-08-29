@@ -95,3 +95,35 @@ export async function PATCH(request: Request) {
 
   return NextResponse.json({ success: true });
 }
+
+export async function DELETE(request: Request) {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session?.user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const body = await request.json();
+
+  if (body.all === true) {
+    await prisma.notification.deleteMany({
+      where: { userId: session.user.id },
+    });
+    return NextResponse.json({ success: true });
+  }
+
+  if (typeof body.id !== "string") {
+    return NextResponse.json(
+      { error: "Notification id is required" },
+      { status: 400 }
+    );
+  }
+
+  await prisma.notification.deleteMany({
+    where: { id: body.id, userId: session.user.id },
+  });
+
+  return NextResponse.json({ success: true });
+}

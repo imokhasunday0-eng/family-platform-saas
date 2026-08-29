@@ -350,6 +350,7 @@ exports.Prisma.NoteScalarFieldEnum = {
   title: 'title',
   content: 'content',
   category: 'category',
+  pinned: 'pinned',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -361,6 +362,7 @@ exports.Prisma.NotificationScalarFieldEnum = {
   body: 'body',
   read: 'read',
   channel: 'channel',
+  link: 'link',
   createdAt: 'createdAt'
 };
 
@@ -387,6 +389,14 @@ exports.Prisma.SettingsScalarFieldEnum = {
   mealReminders: 'mealReminders',
   groceryReminders: 'groceryReminders',
   budgetAlerts: 'budgetAlerts'
+};
+
+exports.Prisma.NoteTodoScalarFieldEnum = {
+  id: 'id',
+  noteId: 'noteId',
+  content: 'content',
+  done: 'done',
+  position: 'position'
 };
 
 exports.Prisma.SortOrder = {
@@ -449,7 +459,8 @@ exports.Prisma.ModelName = {
   Note: 'Note',
   Notification: 'Notification',
   ActivityLog: 'ActivityLog',
-  Settings: 'Settings'
+  Settings: 'Settings',
+  NoteTodo: 'NoteTodo'
 };
 
 /**

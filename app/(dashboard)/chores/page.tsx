@@ -36,9 +36,12 @@ export default async function ChoresPage() {
     title: c.title,
     description: c.description,
     points: c.points,
-    completedAt: c.assignments[0]?.completedAt ?? null,
+    completedAt: c.assignments[0]?.completedAt
+      ? c.assignments[0].completedAt.toISOString()
+      : null,
     dueDate: c.assignments[0]?.dueDate?.toISOString() ?? null,
     assignedToName: c.assignments[0]?.user.name ?? null,
+    assignedToUserId: c.assignments[0]?.userId ?? null,
   }));
 
   const memberList = members.map((m) => ({
@@ -48,7 +51,7 @@ export default async function ChoresPage() {
   }));
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-indigo-50 via-purple-50 to-teal-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
+    <main className="min-h-screen">
       <div className="mx-auto max-w-3xl px-4 py-7 sm:px-6 md:py-10">
         <p className="text-xs font-bold uppercase tracking-[0.14em] text-slate-400 dark:text-slate-500">
           Chores
@@ -61,10 +64,13 @@ export default async function ChoresPage() {
         </p>
 
         <div className="mt-6">
-          <ChoresView chores={serialized} members={memberList} />
+          <ChoresView
+            chores={serialized}
+            members={memberList}
+            currentUserId={session.user.id}
+          />
         </div>
       </div>
     </main>
   );
 }
-

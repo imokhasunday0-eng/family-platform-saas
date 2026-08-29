@@ -58,7 +58,7 @@ export default async function BudgetPage() {
   const monthName = now.toLocaleDateString("en-US", { month: "long" });
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-indigo-50 via-purple-50 to-teal-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
+    <main className="min-h-screen">
       <div className="mx-auto max-w-3xl px-4 py-7 sm:px-6 md:py-10">
         <p className="text-xs font-bold uppercase tracking-[0.14em] text-slate-400 dark:text-slate-500">
           Budget · {monthName} {year}

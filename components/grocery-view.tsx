@@ -1,7 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { Check, Plus, Trash2 } from "lucide-react";
+import {
+  Check,
+  Plus,
+  Trash2,
+  ChevronDown,
+} from "lucide-react";
 
 type Item = {
   id: string;
@@ -13,6 +18,9 @@ type Item = {
 
 export function GroceryView({ items }: { items: Item[] }) {
   const [showForm, setShowForm] = useState(false);
+  const [listOpen, setListOpen] = useState(true);
+  const [cartOpen, setCartOpen] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const pending = items.filter((i) => !i.purchased);
   const bought = items.filter((i) => i.purchased);
@@ -32,12 +40,25 @@ export function GroceryView({ items }: { items: Item[] }) {
   }
 
   async function deleteItem(id: string) {
-    const res = await fetch("/api/grocery", {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id }),
-    });
-    if (!res.ok) alert("Could not delete item");
+    if (!confirm("Delete this item?")) return;
+
+    setDeletingId(id);
+
+    try {
+      const res = await fetch("/api/grocery", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        alert(data?.error || "Could not delete item");
+      } else {
+        window.location.reload();
+      }
+    } finally {
+      setDeletingId(null);
+    }
   }
 
   return (
@@ -73,92 +94,133 @@ export function GroceryView({ items }: { items: Item[] }) {
       {/* Add form */}
       {showForm && <AddItemForm onDone={() => setShowForm(false)} />}
 
-      {/* To buy */}
+      {/* Shopping list - collapsible */}
       <div className="rounded-2xl border border-white/60 bg-white dark:bg-slate-900/85 p-4 shadow-sm backdrop-blur sm:p-5">
-        <h3 className="text-sm font-bold text-slate-800 dark:text-slate-100">Shopping list</h3>
+        <button
+          type="button"
+          onClick={() => setListOpen(!listOpen)}
+          className="flex w-full items-center justify-between text-left"
+        >
+          <span className="text-sm font-bold text-slate-800 dark:text-slate-100">
+            Shopping list
+            <span className="ml-2 rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-600">
+              {pending.length}
+            </span>
+          </span>
+          <ChevronDown
+            className={
+              "h-4 w-4 shrink-0 text-slate-400 transition-transform duration-200 " +
+              (listOpen ? "rotate-180" : "")
+            }
+          />
+        </button>
 
-        {pending.length === 0 ? (
-          <p className="mt-3 rounded-xl border border-dashed border-slate-200 dark:border-slate-700 p-4 text-center text-xs text-slate-400 dark:text-slate-500">
-            Empty! Add what your family needs.
-          </p>
-        ) : (
-          <ul className="mt-3 space-y-2">
-            {pending.map((item) => (
-              <li
-                key={item.id}
-                className="flex items-center gap-3 rounded-xl bg-emerald-50/60 p-3"
-              >
-                <button
-                  onClick={() => {
-                    togglePurchased(item.id, true);
-                  }}
-                  aria-label="Mark purchased"
-                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border-2 border-emerald-300 bg-white dark:bg-slate-900 text-transparent transition hover:border-emerald-600 hover:text-emerald-600"
+        {listOpen && (
+          pending.length === 0 ? (
+            <p className="mt-3 rounded-xl border border-dashed border-slate-200 dark:border-slate-700 p-4 text-center text-xs text-slate-400 dark:text-slate-500">
+              Empty! Add what your family needs.
+            </p>
+          ) : (
+            <ul className="mt-3 space-y-2">
+              {pending.map((item) => (
+                <li
+                  key={item.id}
+                  className="flex items-center gap-3 rounded-xl bg-emerald-50/60 p-3"
                 >
-                  <Check className="h-4 w-4" />
-                </button>
+                  <button
+                    onClick={() => {
+                      togglePurchased(item.id, true);
+                    }}
+                    aria-label="Mark purchased"
+                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border-2 border-emerald-300 bg-white dark:bg-slate-900 text-transparent transition hover:border-emerald-600 hover:text-emerald-600"
+                  >
+                    <Check className="h-4 w-4" />
+                  </button>
 
-                <div className="min-w-0 flex-1">
-                  <p className="truncate text-xs font-bold text-slate-800 dark:text-slate-100">
-                    {item.name}
-                    {item.quantity && (
-                      <span className="ml-2 font-semibold text-slate-400 dark:text-slate-500">
-                        x{item.quantity}
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-xs font-bold text-slate-800 dark:text-slate-100">
+                      {item.name}
+                      {item.quantity && (
+                        <span className="ml-2 font-semibold text-slate-400 dark:text-slate-500">
+                          x{item.quantity}
+                        </span>
+                      )}
+                    </p>
+                    {item.category && (
+                      <span className="mt-1 inline-block rounded-full bg-white dark:bg-slate-900 px-2 py-0.5 text-[10px] font-semibold text-slate-500 shadow-sm">
+                        {item.category}
                       </span>
                     )}
-                  </p>
-                  {item.category && (
-                    <span className="mt-1 inline-block rounded-full bg-white dark:bg-slate-900 px-2 py-0.5 text-[10px] font-semibold text-slate-500 shadow-sm">
-                      {item.category}
-                    </span>
-                  )}
-                </div>
+                  </div>
 
-                <button
-                  onClick={() => deleteItem(item.id)}
-                  aria-label="Delete item"
-                  className="shrink-0 rounded-lg p-1.5 text-slate-300 transition hover:bg-red-50 hover:text-red-500"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </button>
-              </li>
-            ))}
-          </ul>
+                  <button
+                    onClick={() => deleteItem(item.id)}
+                    disabled={deletingId === item.id}
+                    aria-label="Delete item"
+                    className="shrink-0 rounded-lg p-1.5 text-slate-300 transition hover:bg-red-50 hover:text-red-500 disabled:opacity-50"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )
         )}
       </div>
 
-      {/* In cart */}
+      {/* In cart - collapsible */}
       {bought.length > 0 && (
         <div className="rounded-2xl border border-white/60 bg-white dark:bg-slate-900/85 p-4 shadow-sm backdrop-blur sm:p-5">
-          <h3 className="text-sm font-bold text-slate-800 dark:text-slate-100">In the cart 🛒</h3>
-          <ul className="mt-3 space-y-2">
-            {bought.map((item) => (
-              <li
-                key={item.id}
-                className="flex items-center gap-3 rounded-xl bg-slate-50 p-3"
-              >
-                <button
-                  onClick={() => {
-                    togglePurchased(item.id, false);
-                  }}
-                  aria-label="Move back to list"
-                  className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border-2 border-emerald-400 bg-emerald-500 text-white transition hover:bg-white hover:text-emerald-500"
+          <button
+            type="button"
+            onClick={() => setCartOpen(!cartOpen)}
+            className="flex w-full items-center justify-between text-left"
+          >
+            <span className="text-sm font-bold text-slate-800 dark:text-slate-100">
+              In the cart 🛒
+              <span className="ml-2 rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-bold text-slate-500 dark:bg-slate-800">
+                {bought.length}
+              </span>
+            </span>
+            <ChevronDown
+              className={
+                "h-4 w-4 shrink-0 text-slate-400 transition-transform duration-200 " +
+                (cartOpen ? "rotate-180" : "")
+              }
+            />
+          </button>
+
+          {cartOpen && (
+            <ul className="mt-3 space-y-2">
+              {bought.map((item) => (
+                <li
+                  key={item.id}
+                  className="flex items-center gap-3 rounded-xl bg-slate-50 p-3 dark:bg-slate-800"
                 >
-                  <Check className="h-3.5 w-3.5" />
-                </button>
-                <p className="flex-1 truncate text-xs font-semibold text-slate-400 dark:text-slate-500 line-through">
-                  {item.name}
-                </p>
-                <button
-                  onClick={() => deleteItem(item.id)}
-                  aria-label="Delete item"
-                  className="shrink-0 rounded-lg p-1.5 text-slate-300 transition hover:bg-red-50 hover:text-red-500"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </button>
-              </li>
-            ))}
-          </ul>
+                  <button
+                    onClick={() => {
+                      togglePurchased(item.id, false);
+                    }}
+                    aria-label="Move back to list"
+                    className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border-2 border-emerald-400 bg-emerald-500 text-white transition hover:bg-white hover:text-emerald-500 dark:bg-slate-900"
+                  >
+                    <Check className="h-3.5 w-3.5" />
+                  </button>
+                  <p className="flex-1 truncate text-xs font-semibold text-slate-400 dark:text-slate-500 line-through">
+                    {item.name}
+                  </p>
+                  <button
+                    onClick={() => deleteItem(item.id)}
+                    disabled={deletingId === item.id}
+                    aria-label="Delete item"
+                    className="shrink-0 rounded-lg p-1.5 text-slate-300 transition hover:bg-red-50 hover:text-red-500 disabled:opacity-50"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       )}
     </div>
@@ -242,4 +304,3 @@ function AddItemForm({ onDone }: { onDone: () => void }) {
     </form>
   );
 }
-
