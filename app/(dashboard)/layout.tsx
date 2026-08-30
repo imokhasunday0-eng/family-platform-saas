@@ -10,6 +10,7 @@ import { DashboardNav } from "@/components/dashboard-nav";
 import { MobileDrawer } from "@/components/mobile-drawer";
 import { NotificationBell } from "@/components/notification-bell";
 import { AmbientBackground } from "@/components/ambient-background";
+import { PresenceHeartbeat } from "@/components/presence-heartbeat";
 
 const bottomNav = [
   { label: "Notifications", href: "/notifications", icon: Bell },
@@ -35,6 +36,7 @@ export default async function DashboardLayout({
 
   return (
     <>
+      <PresenceHeartbeat />
       <AmbientBackground />
       <div className="relative z-10 min-h-screen text-foreground">
       {/* Sidebar (desktop only) */}

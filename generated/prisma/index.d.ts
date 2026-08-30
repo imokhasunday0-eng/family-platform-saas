@@ -7337,6 +7337,7 @@ export namespace Prisma {
     emailVerified: boolean | null
     image: string | null
     avatarUrl: string | null
+    lastSeen: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -7349,6 +7350,7 @@ export namespace Prisma {
     emailVerified: boolean | null
     image: string | null
     avatarUrl: string | null
+    lastSeen: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -7361,6 +7363,7 @@ export namespace Prisma {
     emailVerified: number
     image: number
     avatarUrl: number
+    lastSeen: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -7375,6 +7378,7 @@ export namespace Prisma {
     emailVerified?: true
     image?: true
     avatarUrl?: true
+    lastSeen?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -7387,6 +7391,7 @@ export namespace Prisma {
     emailVerified?: true
     image?: true
     avatarUrl?: true
+    lastSeen?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -7399,6 +7404,7 @@ export namespace Prisma {
     emailVerified?: true
     image?: true
     avatarUrl?: true
+    lastSeen?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -7484,6 +7490,7 @@ export namespace Prisma {
     emailVerified: boolean
     image: string | null
     avatarUrl: string | null
+    lastSeen: Date | null
     createdAt: Date
     updatedAt: Date
     _count: UserCountAggregateOutputType | null
@@ -7513,6 +7520,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: boolean
     avatarUrl?: boolean
+    lastSeen?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     memberships?: boolean | User$membershipsArgs<ExtArgs>
@@ -7537,6 +7545,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: boolean
     avatarUrl?: boolean
+    lastSeen?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["user"]>
@@ -7549,6 +7558,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: boolean
     avatarUrl?: boolean
+    lastSeen?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["user"]>
@@ -7561,11 +7571,12 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: boolean
     avatarUrl?: boolean
+    lastSeen?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "passwordHash" | "name" | "emailVerified" | "image" | "avatarUrl" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "passwordHash" | "name" | "emailVerified" | "image" | "avatarUrl" | "lastSeen" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     memberships?: boolean | User$membershipsArgs<ExtArgs>
     sessions?: boolean | User$sessionsArgs<ExtArgs>
@@ -7606,6 +7617,7 @@ export namespace Prisma {
       emailVerified: boolean
       image: string | null
       avatarUrl: string | null
+      lastSeen: Date | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["user"]>
@@ -8049,6 +8061,7 @@ export namespace Prisma {
     readonly emailVerified: FieldRef<"User", 'Boolean'>
     readonly image: FieldRef<"User", 'String'>
     readonly avatarUrl: FieldRef<"User", 'String'>
+    readonly lastSeen: FieldRef<"User", 'DateTime'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
   }
@@ -36618,6 +36631,7 @@ export namespace Prisma {
     emailVerified: 'emailVerified',
     image: 'image',
     avatarUrl: 'avatarUrl',
+    lastSeen: 'lastSeen',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -37329,6 +37343,7 @@ export namespace Prisma {
     emailVerified?: BoolFilter<"User"> | boolean
     image?: StringNullableFilter<"User"> | string | null
     avatarUrl?: StringNullableFilter<"User"> | string | null
+    lastSeen?: DateTimeNullableFilter<"User"> | Date | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     memberships?: FamilyMemberListRelationFilter
@@ -37352,6 +37367,7 @@ export namespace Prisma {
     emailVerified?: SortOrder
     image?: SortOrderInput | SortOrder
     avatarUrl?: SortOrderInput | SortOrder
+    lastSeen?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     memberships?: FamilyMemberOrderByRelationAggregateInput
@@ -37378,6 +37394,7 @@ export namespace Prisma {
     emailVerified?: BoolFilter<"User"> | boolean
     image?: StringNullableFilter<"User"> | string | null
     avatarUrl?: StringNullableFilter<"User"> | string | null
+    lastSeen?: DateTimeNullableFilter<"User"> | Date | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     memberships?: FamilyMemberListRelationFilter
@@ -37401,6 +37418,7 @@ export namespace Prisma {
     emailVerified?: SortOrder
     image?: SortOrderInput | SortOrder
     avatarUrl?: SortOrderInput | SortOrder
+    lastSeen?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: UserCountOrderByAggregateInput
@@ -37419,6 +37437,7 @@ export namespace Prisma {
     emailVerified?: BoolWithAggregatesFilter<"User"> | boolean
     image?: StringNullableWithAggregatesFilter<"User"> | string | null
     avatarUrl?: StringNullableWithAggregatesFilter<"User"> | string | null
+    lastSeen?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
   }
@@ -39313,6 +39332,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     avatarUrl?: string | null
+    lastSeen?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     memberships?: FamilyMemberCreateNestedManyWithoutUserInput
@@ -39336,6 +39356,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     avatarUrl?: string | null
+    lastSeen?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     memberships?: FamilyMemberUncheckedCreateNestedManyWithoutUserInput
@@ -39359,6 +39380,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSeen?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     memberships?: FamilyMemberUpdateManyWithoutUserNestedInput
@@ -39382,6 +39404,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSeen?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     memberships?: FamilyMemberUncheckedUpdateManyWithoutUserNestedInput
@@ -39405,6 +39428,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     avatarUrl?: string | null
+    lastSeen?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -39417,6 +39441,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSeen?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -39429,6 +39454,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSeen?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -41463,6 +41489,7 @@ export namespace Prisma {
     emailVerified?: SortOrder
     image?: SortOrder
     avatarUrl?: SortOrder
+    lastSeen?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -41475,6 +41502,7 @@ export namespace Prisma {
     emailVerified?: SortOrder
     image?: SortOrder
     avatarUrl?: SortOrder
+    lastSeen?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -41487,6 +41515,7 @@ export namespace Prisma {
     emailVerified?: SortOrder
     image?: SortOrder
     avatarUrl?: SortOrder
+    lastSeen?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -44758,6 +44787,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     avatarUrl?: string | null
+    lastSeen?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     memberships?: FamilyMemberCreateNestedManyWithoutUserInput
@@ -44780,6 +44810,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     avatarUrl?: string | null
+    lastSeen?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     memberships?: FamilyMemberUncheckedCreateNestedManyWithoutUserInput
@@ -44818,6 +44849,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSeen?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     memberships?: FamilyMemberUpdateManyWithoutUserNestedInput
@@ -44840,6 +44872,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSeen?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     memberships?: FamilyMemberUncheckedUpdateManyWithoutUserNestedInput
@@ -44862,6 +44895,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     avatarUrl?: string | null
+    lastSeen?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     memberships?: FamilyMemberCreateNestedManyWithoutUserInput
@@ -44884,6 +44918,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     avatarUrl?: string | null
+    lastSeen?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     memberships?: FamilyMemberUncheckedCreateNestedManyWithoutUserInput
@@ -44922,6 +44957,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSeen?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     memberships?: FamilyMemberUpdateManyWithoutUserNestedInput
@@ -44944,6 +44980,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSeen?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     memberships?: FamilyMemberUncheckedUpdateManyWithoutUserNestedInput
@@ -44966,6 +45003,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     avatarUrl?: string | null
+    lastSeen?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     memberships?: FamilyMemberCreateNestedManyWithoutUserInput
@@ -44988,6 +45026,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     avatarUrl?: string | null
+    lastSeen?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     memberships?: FamilyMemberUncheckedCreateNestedManyWithoutUserInput
@@ -45026,6 +45065,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSeen?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     memberships?: FamilyMemberUpdateManyWithoutUserNestedInput
@@ -45048,6 +45088,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSeen?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     memberships?: FamilyMemberUncheckedUpdateManyWithoutUserNestedInput
@@ -46315,6 +46356,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     avatarUrl?: string | null
+    lastSeen?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -46337,6 +46379,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     avatarUrl?: string | null
+    lastSeen?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -46412,6 +46455,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSeen?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -46434,6 +46478,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSeen?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -47391,6 +47436,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     avatarUrl?: string | null
+    lastSeen?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     memberships?: FamilyMemberCreateNestedManyWithoutUserInput
@@ -47413,6 +47459,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     avatarUrl?: string | null
+    lastSeen?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     memberships?: FamilyMemberUncheckedCreateNestedManyWithoutUserInput
@@ -47482,6 +47529,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSeen?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     memberships?: FamilyMemberUpdateManyWithoutUserNestedInput
@@ -47504,6 +47552,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSeen?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     memberships?: FamilyMemberUncheckedUpdateManyWithoutUserNestedInput
@@ -47824,6 +47873,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     avatarUrl?: string | null
+    lastSeen?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     memberships?: FamilyMemberCreateNestedManyWithoutUserInput
@@ -47846,6 +47896,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     avatarUrl?: string | null
+    lastSeen?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     memberships?: FamilyMemberUncheckedCreateNestedManyWithoutUserInput
@@ -47917,6 +47968,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSeen?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     memberships?: FamilyMemberUpdateManyWithoutUserNestedInput
@@ -47939,6 +47991,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSeen?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     memberships?: FamilyMemberUncheckedUpdateManyWithoutUserNestedInput
@@ -47988,6 +48041,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     avatarUrl?: string | null
+    lastSeen?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     memberships?: FamilyMemberCreateNestedManyWithoutUserInput
@@ -48010,6 +48064,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     avatarUrl?: string | null
+    lastSeen?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     memberships?: FamilyMemberUncheckedCreateNestedManyWithoutUserInput
@@ -48081,6 +48136,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSeen?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     memberships?: FamilyMemberUpdateManyWithoutUserNestedInput
@@ -48103,6 +48159,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSeen?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     memberships?: FamilyMemberUncheckedUpdateManyWithoutUserNestedInput
@@ -48386,6 +48443,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     avatarUrl?: string | null
+    lastSeen?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     memberships?: FamilyMemberCreateNestedManyWithoutUserInput
@@ -48408,6 +48466,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     avatarUrl?: string | null
+    lastSeen?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     memberships?: FamilyMemberUncheckedCreateNestedManyWithoutUserInput
@@ -48493,6 +48552,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSeen?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     memberships?: FamilyMemberUpdateManyWithoutUserNestedInput
@@ -48515,6 +48575,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSeen?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     memberships?: FamilyMemberUncheckedUpdateManyWithoutUserNestedInput
@@ -48672,6 +48733,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     avatarUrl?: string | null
+    lastSeen?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     memberships?: FamilyMemberCreateNestedManyWithoutUserInput
@@ -48694,6 +48756,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     avatarUrl?: string | null
+    lastSeen?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     memberships?: FamilyMemberUncheckedCreateNestedManyWithoutUserInput
@@ -48802,6 +48865,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSeen?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     memberships?: FamilyMemberUpdateManyWithoutUserNestedInput
@@ -48824,6 +48888,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSeen?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     memberships?: FamilyMemberUncheckedUpdateManyWithoutUserNestedInput
@@ -48846,6 +48911,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     avatarUrl?: string | null
+    lastSeen?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     memberships?: FamilyMemberCreateNestedManyWithoutUserInput
@@ -48868,6 +48934,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     avatarUrl?: string | null
+    lastSeen?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     memberships?: FamilyMemberUncheckedCreateNestedManyWithoutUserInput
@@ -48906,6 +48973,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSeen?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     memberships?: FamilyMemberUpdateManyWithoutUserNestedInput
@@ -48928,6 +48996,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSeen?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     memberships?: FamilyMemberUncheckedUpdateManyWithoutUserNestedInput
@@ -48987,6 +49056,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     avatarUrl?: string | null
+    lastSeen?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     memberships?: FamilyMemberCreateNestedManyWithoutUserInput
@@ -49009,6 +49079,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     avatarUrl?: string | null
+    lastSeen?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     memberships?: FamilyMemberUncheckedCreateNestedManyWithoutUserInput
@@ -49090,6 +49161,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSeen?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     memberships?: FamilyMemberUpdateManyWithoutUserNestedInput
@@ -49112,6 +49184,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSeen?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     memberships?: FamilyMemberUncheckedUpdateManyWithoutUserNestedInput

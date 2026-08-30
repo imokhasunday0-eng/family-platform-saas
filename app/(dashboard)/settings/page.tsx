@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { OnlineDots } from "@/components/online-dots";
+import { OnlineDot } from "@/components/online-dot";
 
 type Member = {
   id: string;
@@ -332,14 +334,16 @@ export default function SettingsPage() {
             </p>
           </div>
           <ul className="divide-y divide-slate-100 dark:divide-slate-800">
+            <OnlineDots />
             {family.members.map((m) => (
               <li
                 key={m.id}
                 className="flex items-center justify-between gap-4 px-6 py-4 transition hover:bg-white/70 dark:hover:bg-slate-800/40"
               >
                 <div className="flex min-w-0 items-center gap-3">
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-violet-600 text-sm font-bold text-white shadow-md shadow-blue-500/20">
+                  <div className="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-violet-600 text-sm font-bold text-white shadow-md shadow-blue-500/20">
                     {m.user.name?.charAt(0)?.toUpperCase() || "?"}
+                    <OnlineDot userId={m.user.id} />
                   </div>
                   <div className="min-w-0">
                     <p className="truncate text-sm font-semibold text-slate-900 dark:text-white">
