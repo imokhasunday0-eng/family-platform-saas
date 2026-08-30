@@ -1,3 +1,4 @@
+import { familyDisplayName } from "@/lib/family-name";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -28,7 +29,7 @@ export default async function DashboardPage() {
 
   if (!membership) {
     const family = await prisma.family.create({
-      data: { name: `${session.user.name}'s Family` },
+      data: { name: `${session.user.name.split(" ").pop()}'s Family` },
     });
     membership = await prisma.familyMember.create({
       data: {
@@ -144,35 +145,26 @@ export default async function DashboardPage() {
         {/* ═══════════ LEVEL 1: HERO ═══════════ */}
         <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-600 via-violet-600 to-purple-700 px-6 py-7 text-white shadow-[0_18px_45px_rgba(99,102,241,0.35)] sm:px-8 sm:py-9">
           <div className="relative z-10 max-w-2xl">
-            <p className="text-xs font-bold uppercase tracking-[0.18em] text-indigo-200">
-              {dateLabel}
-            </p>
-            <h1 className="mt-1 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
-              {membership.family.name}
+            <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+              {familyDisplayName(membership.family.name)}
             </h1>
-            <h2 className="mt-2 text-xl font-bold tracking-tight text-indigo-100 sm:text-2xl">
-              {greeting}, {firstName}! 👋
-            </h2>
-
-            <p className="mt-3 max-w-xl text-sm leading-6 text-indigo-200">
-              Keep your family&apos;s schedule, meals, chores, shopping and
-              finances organized in one place.
+            <p className="mt-1 text-lg font-semibold text-indigo-100">
+              {greeting}! 👋
             </p>
 
-            <div className="mt-6 flex flex-wrap gap-3">
+            <p className="mt-3 text-sm leading-6 text-indigo-200">
+              Plan your family&apos;s day, all in one place.
+            </p>
+
+            <div className="mt-5 flex items-center gap-4">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-indigo-200">
+                {dateLabel}
+              </p>
               <Link
                 href="/calendar"
-                className="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-xs font-bold text-indigo-700 transition hover:bg-indigo-50"
+                className="text-xs font-semibold text-indigo-100 underline-offset-4 transition hover:text-white hover:underline"
               >
-                <Plus className="h-4 w-4" />
-                Add something
-              </Link>
-              <Link
-                href="/calendar"
-                className="inline-flex items-center gap-2 rounded-xl border border-white/25 bg-white/10 px-4 py-2.5 text-xs font-semibold text-white backdrop-blur transition hover:bg-white/20"
-              >
-                View calendar
-                <ArrowRight className="h-4 w-4" />
+                View calendar →
               </Link>
             </div>
           </div>
