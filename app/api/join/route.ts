@@ -34,11 +34,20 @@ export async function POST(req: Request) {
   if (!invite || invite.acceptedAt)
     return NextResponse.json({ error: "Invalid or already used" }, { status: 404 });
 
-  await prisma.familyMember.upsert({
+  if (invite.email && session.user.email?.toLowerCase() !== invite.email.toLowerCase())
+    return NextResponse.json(
+      { error: "This invite was sent to " + invite.email + ". Please log in with that account." },
+      { status: 403 }
+    );
+
+  const existing = await prisma.familyMember.findUnique({
     where: { userId_familyId: { userId: session.user.id, familyId: invite.familyId } },
-    update: {},
-    create: { userId: session.user.id, familyId: invite.familyId, role: invite.role },
   });
+  if (!existing) {
+    await prisma.familyMember.create({
+      data: { userId: session.user.id, familyId: invite.familyId, role: invite.role },
+    });
+  }
   await prisma.invitation.update({
     where: { id: invite.id },
     data: { acceptedAt: new Date() },
