@@ -24,7 +24,24 @@ export function NotificationBell() {
     // Re-fetch whenever anything changes notifications anywhere in the app
     const handler = () => loadCount();
     window.addEventListener("notifications-changed", handler);
-    return () => window.removeEventListener("notifications-changed", handler);
+
+    // Poll every 20s so notifications created server-side (new chores,
+    // family joins, etc.) show up without a manual page reload
+    const interval = setInterval(loadCount, 20000);
+
+    // Instant refresh when the user returns to the tab
+    const onFocus = () => {
+      if (document.visibilityState === "visible") loadCount();
+    };
+    window.addEventListener("focus", onFocus);
+    document.addEventListener("visibilitychange", onFocus);
+
+    return () => {
+      window.removeEventListener("notifications-changed", handler);
+      window.removeEventListener("focus", onFocus);
+      document.removeEventListener("visibilitychange", onFocus);
+      clearInterval(interval);
+    };
   }, [loadCount]);
 
   return (
