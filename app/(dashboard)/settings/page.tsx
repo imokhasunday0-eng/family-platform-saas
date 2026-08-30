@@ -154,8 +154,12 @@ export default function SettingsPage() {
     setNotificationSaving(null);
   };
 
+  const [inviteLink, setInviteLink] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+
   const sendInvite = async () => {
     setMsg("");
+    setInviteLink(null);
     const res = await fetch("/api/family", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -163,17 +167,44 @@ export default function SettingsPage() {
     });
     const data = await res.json();
     if (res.ok) {
-      setMsg(
-        "Invite link: " +
-          window.location.origin +
-          "/join/" +
-          data.token
-      );
+      setInviteLink(window.location.origin + "/join/" + data.token);
       setEmail("");
       load();
     } else {
       setMsg(data.error || "Failed to create invite");
     }
+  };
+
+  const copyInvite = async (link: string) => {
+    try {
+      await navigator.clipboard.writeText(link);
+    } catch {
+      // fallback for older browsers / insecure contexts
+      const ta = document.createElement("textarea");
+      ta.value = link;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      ta.remove();
+    }
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const shareInvite = async (link: string) => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "Join our family",
+          text: "You're invited to join our family platform! \u27A4 ",
+          url: link,
+        });
+        return;
+      } catch {
+        /* user cancelled */
+      }
+    }
+    copyInvite(link);
   };
 
   const renameFamily = async () => {
@@ -334,7 +365,7 @@ export default function SettingsPage() {
       </section>
 
       {/* Profile */}
-      <section className="rounded-lg border p-4">
+      <section className="overflow-hidden rounded-2xl border border-blue-200/60 bg-white p-5 shadow-lg shadow-blue-500/10 dark:border-indigo-500/20 dark:bg-slate-900">
         <button
           type="button"
           onClick={() => setProfileOpen((p) => !p)}
@@ -383,7 +414,7 @@ export default function SettingsPage() {
       </section>
 
       {/* Invite */}
-      <section className="rounded-lg border p-4">
+      <section className="overflow-hidden rounded-2xl border border-blue-200/60 bg-white p-5 shadow-lg shadow-blue-500/10 dark:border-indigo-500/20 dark:bg-slate-900">
         <button
           type="button"
           onClick={() => setInviteOpen((prev) => !prev)}
@@ -422,15 +453,71 @@ export default function SettingsPage() {
               </select>
               <button
                 onClick={sendInvite}
-                className="rounded bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+                className="rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-5 py-2 text-sm font-semibold text-white shadow-md shadow-blue-500/20 transition hover:opacity-90 disabled:opacity-50"
+                disabled={!email.trim()}
               >
                 Invite
               </button>
             </div>
+
+            {inviteLink && (
+              <div className="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 p-4 dark:border-emerald-500/30 dark:bg-emerald-500/10">
+                <p className="text-sm font-semibold text-emerald-700 dark:text-emerald-300">
+                  ✅ Invite created for <span className="underline">{email || "your member"}</span>
+                </p>
+                <div className="mt-2 flex items-center gap-2">
+                  <input
+                    readOnly
+                    value={inviteLink}
+                    onFocus={(e) => e.currentTarget.select()}
+                    className="min-w-0 flex-1 rounded-lg border border-emerald-300 bg-white px-3 py-2 text-xs text-slate-700 dark:border-emerald-500/30 dark:bg-slate-900 dark:text-slate-300"
+                  />
+                  <button
+                    onClick={() => copyInvite(inviteLink)}
+                    className="shrink-0 rounded-lg bg-emerald-600 px-3 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-emerald-700"
+                  >
+                    {copied ? "✓ Copied" : "📋 Copy"}
+                  </button>
+                  <button
+                    onClick={() => shareInvite(inviteLink)}
+                    className="shrink-0 rounded-lg bg-blue-600 px-3 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-blue-700"
+                  >
+                    📤 Share
+                  </button>
+                </div>
+                <p className="mt-2 text-xs text-emerald-600 dark:text-emerald-400">
+                  They need to sign up / log in first, then open this link to join.
+                </p>
+              </div>
+            )}
+
             {family.invitations.length > 0 && (
-              <div className="mt-3 text-xs text-gray-500">
-                Pending invites:{" "}
-                {family.invitations.map((i) => i.email).join(", ")}
+              <div className="mt-4 space-y-2">
+                <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+                  Pending invites
+                </p>
+                {family.invitations.map((i) => {
+                  const link = window.location.origin + "/join/" + i.token;
+                  return (
+                    <div
+                      key={i.id}
+                      className="flex items-center justify-between gap-3 rounded-lg border border-slate-200 px-3 py-2 dark:border-slate-700"
+                    >
+                      <div className="min-w-0">
+                        <p className="truncate text-sm font-medium text-slate-700 dark:text-slate-200">
+                          {i.email}
+                        </p>
+                        <p className="text-xs text-slate-400">{i.role}</p>
+                      </div>
+                      <button
+                        onClick={() => copyInvite(link)}
+                        className="shrink-0 rounded-lg border border-slate-300 px-3 py-1.5 text-xs font-medium text-slate-600 transition hover:bg-slate-50 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-800"
+                      >
+                        📋 Link
+                      </button>
+                    </div>
+                  );
+                })}
               </div>
             )}
           </div>
@@ -438,7 +525,7 @@ export default function SettingsPage() {
       </section>
 
       {/* Appearance — Light/Dark slider + System option */}
-      <section className="rounded-lg border p-4">
+      <section className="overflow-hidden rounded-2xl border border-blue-200/60 bg-white p-5 shadow-lg shadow-blue-500/10 dark:border-indigo-500/20 dark:bg-slate-900">
         <button
           type="button"
           onClick={() => setAppearanceOpen((prev) => !prev)}
@@ -524,7 +611,7 @@ export default function SettingsPage() {
       </section>
 
       {/* Notifications */}
-      <section className="rounded-lg border p-4">
+      <section className="overflow-hidden rounded-2xl border border-blue-200/60 bg-white p-5 shadow-lg shadow-blue-500/10 dark:border-indigo-500/20 dark:bg-slate-900">
         <button
           type="button"
           onClick={() => setNotificationsOpen((prev) => !prev)}
@@ -583,7 +670,7 @@ export default function SettingsPage() {
       </section>
 
       {/* Security */}
-      <section className="rounded-lg border p-4">
+      <section className="overflow-hidden rounded-2xl border border-blue-200/60 bg-white p-5 shadow-lg shadow-blue-500/10 dark:border-indigo-500/20 dark:bg-slate-900">
         <button
           type="button"
           onClick={() => setSecurityOpen((p) => !p)}
