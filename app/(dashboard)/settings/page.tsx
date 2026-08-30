@@ -240,7 +240,11 @@ export default function SettingsPage() {
   };
 
   const logout = async () => {
-    await fetch("/api/auth/sign-out", { method: "POST" });
+    await fetch("/api/auth/sign-out", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: "{}",
+    });
     window.location.href = "/login";
   };
 
