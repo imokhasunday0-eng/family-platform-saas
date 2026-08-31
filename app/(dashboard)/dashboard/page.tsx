@@ -107,13 +107,60 @@ export default async function DashboardPage() {
 
   const monthSpent = Number(budgetAgg._sum.amount ?? 0);
 
+  const formatTime = (d: Date) =>
+    d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
+
   const modules = [
-    { title: "Today's Events", value: eventsToday.length + (eventsToday.length === 1 ? " event today" : " events today"), href: "/calendar" },
-    { title: "Meal Planner", value: mealPlans + (mealPlans === 1 ? " meal planned" : " meals planned"), href: "/meal-planner" },
-    { title: "Pending Chores", value: choresPending + (choresPending === 1 ? " chore to do" : " chores to do"), href: "/chores" },
-    { title: "Grocery List", value: groceryLeft + (groceryLeft === 1 ? " item left" : " items left"), href: "/grocery" },
-    { title: "Budget", value: `Spent ${monthSpent.toLocaleString()} this month`, href: "/budget" },
-    { title: "Family Chat", value: messageCount + (messageCount === 1 ? " message" : " messages"), href: "/chat" },
+    {
+      title: "Today's Events",
+      primary: eventsToday.length
+        ? (eventsToday[0].allDay
+            ? "All day"
+            : formatTime(eventsToday[0].startsAt))
+          + " \u00b7 " + eventsToday[0].title
+          + (eventsToday.length > 1 ? " +" + (eventsToday.length - 1) + " more" : "")
+        : "Your day is clear",
+      secondary: eventsToday.length ? "Today" : "Nothing scheduled yet.",
+      href: "/calendar",
+    },
+    {
+      title: "Meal Planner",
+      primary: mealsToday[0]
+        ? (mealsToday[0].recipe ? mealsToday[0].recipe.title : "A meal is planned")
+        : "No meals planned",
+      secondary: mealsToday[0] ? "Tonight" : "Plan tonight's dinner.",
+      href: "/meal-planner",
+    },
+    {
+      title: "Pending Chores",
+      primary: choresPending ? choresPending + " remaining" : "All caught up",
+      secondary: choresPending
+        ? "Waiting for the family"
+        : "Nothing waiting for the family.",
+      href: "/chores",
+    },
+    {
+      title: "Grocery List",
+      primary: groceryLeft
+        ? groceryLeft + (groceryLeft === 1 ? " item" : " items")
+        : "Your list is clear",
+      secondary: groceryLeft ? "To pick up" : "Nothing to pick up.",
+      href: "/grocery",
+    },
+    {
+      title: "Budget",
+      primary: "\u20a6" + monthSpent.toLocaleString(),
+      secondary: "Spent this month",
+      href: "/budget",
+    },
+    {
+      title: "Family Chat",
+      primary: messageCount
+        ? messageCount + (messageCount === 1 ? " message" : " messages")
+        : "Start the conversation",
+      secondary: messageCount ? "In family chat" : "Say hello to the family.",
+      href: "/chat",
+    },
   ];
 
   const firstName = session.user.name?.split(" ")[0] || "there";
@@ -129,9 +176,6 @@ export default async function DashboardPage() {
     day: "numeric",
   });
 
-  const formatTime = (d: Date) =>
-    d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
-
   const MEAL_EMOJI: Record<string, string> = {
     breakfast: "🌅",
     lunch: "☀️",
@@ -143,13 +187,13 @@ export default async function DashboardPage() {
     <main className="min-h-screen">
       <div className="mx-auto max-w-[1400px] px-4 py-7 sm:px-6 md:px-8 md:py-10">
         {/* ═══════════ LEVEL 1: HERO ═══════════ */}
-        <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-600 via-violet-600 to-purple-700 px-6 py-7 text-white shadow-[0_18px_45px_rgba(99,102,241,0.35)] sm:px-8 sm:py-9">
+        <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-700 via-violet-700 to-purple-900 px-6 py-7 text-white shadow-[0_8px_30px_rgba(79,70,229,0.18)] sm:px-8 sm:py-9">
           <div className="relative z-10 max-w-2xl">
             <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
               {familyDisplayName(membership.family.name)}
             </h1>
             <p className="mt-1 text-lg font-semibold text-indigo-100">
-              {greeting}! 👋
+              {greeting}.
             </p>
 
             <p className="mt-3 text-sm leading-6 text-indigo-200">
@@ -157,7 +201,7 @@ export default async function DashboardPage() {
             </p>
 
             <div className="mt-5 flex items-center gap-4">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-indigo-200">
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-indigo-200/90">
                 {dateLabel}
               </p>
               <Link
@@ -170,7 +214,7 @@ export default async function DashboardPage() {
           </div>
           <div className="pointer-events-none absolute -right-20 -top-28 h-72 w-72 rounded-full border border-white/10" />
           <div className="pointer-events-none absolute -right-8 -bottom-36 h-80 w-80 rounded-full border border-white/10" />
-          <div className="pointer-events-none absolute -right-24 top-10 h-56 w-56 rounded-full bg-gradient-to-br from-pink-400/30 to-transparent blur-2xl" />
+          <div className="pointer-events-none absolute -right-24 top-10 h-56 w-56 rounded-full bg-gradient-to-br from-fuchsia-300/15 to-transparent blur-2xl" />
         </section>
 
         {/* ═══════════ LEVEL 2: QUICK STATS ═══════════ */}
