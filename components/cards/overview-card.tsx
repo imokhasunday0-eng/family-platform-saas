@@ -20,36 +20,42 @@ interface OverviewCardProps {
 }
 
 // Muted, sophisticated accents — color as identifier, not decoration
-const styles: Record<string, { icon: any; tile: string; text: string }> = {
+const styles: Record<string, { icon: any; tile: string; text: string; ring: string }> = {
   "Today's Events": {
     icon: CalendarDays,
     tile: "bg-module-events text-white",
     text: "group-hover:text-module-events",
+    ring: "active:ring-module-events/50",
   },
   "Meal Planner": {
     icon: Utensils,
     tile: "bg-module-meals text-white",
     text: "group-hover:text-module-meals",
+    ring: "active:ring-module-meals/50",
   },
   "Pending Chores": {
     icon: CheckSquare,
     tile: "bg-module-chores text-white",
     text: "group-hover:text-module-chores",
+    ring: "active:ring-module-chores/50",
   },
   "Grocery List": {
     icon: ShoppingCart,
     tile: "bg-module-grocery text-white",
     text: "group-hover:text-module-grocery",
+    ring: "active:ring-module-grocery/50",
   },
   Budget: {
     icon: CircleDollarSign,
     tile: "bg-module-budget text-white",
     text: "group-hover:text-module-budget",
+    ring: "active:ring-module-budget/50",
   },
   "Family Chat": {
     icon: MessageCircle,
     tile: "bg-module-chat text-white",
     text: "group-hover:text-module-chat",
+    ring: "active:ring-module-chat/50",
   },
 };
 
@@ -68,7 +74,8 @@ export function OverviewCard({
     <Link
       href={href}
       className={cn(
-        "group relative flex h-full w-full flex-col rounded-card border border-slate-200/70 bg-white p-4 shadow-1 transition duration-200 hover:border-slate-300/80 hover:shadow-2 dark:border-white/10 dark:bg-slate-900 dark:hover:border-white/15",
+        "group relative flex h-full w-full flex-col rounded-card border border-slate-200/70 bg-white p-4 shadow-1 transition duration-200 hover:border-slate-300/80 hover:shadow-2 active:scale-[0.98] active:shadow-1 active:ring-2 active:ring-inset dark:border-white/10 dark:bg-slate-900 dark:hover:border-white/15",
+        s.ring,
         className
       )}
     >

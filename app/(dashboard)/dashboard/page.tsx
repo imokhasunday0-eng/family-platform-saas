@@ -209,7 +209,7 @@ export default async function DashboardPage() {
           </div>
           <div className="relative z-10 max-w-2xl">
             <div className="flex items-center gap-4">
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-indigo-200/90">
+              <p className="rounded-full bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-indigo-100 ring-1 ring-white/15">
                 {dateLabel}
               </p>
               <Link
@@ -219,7 +219,7 @@ export default async function DashboardPage() {
                 View calendar →
               </Link>
             </div>
-            <h1 className="mt-2 text-2xl font-extrabold tracking-tight text-white sm:text-3xl">
+            <h1 className="mt-4 text-2xl font-extrabold tracking-tight text-white sm:text-3xl">
               {greeting}.
             </h1>
 
