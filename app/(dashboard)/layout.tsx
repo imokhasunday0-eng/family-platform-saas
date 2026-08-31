@@ -117,10 +117,7 @@ export default async function DashboardLayout({
         <header className="sticky top-0 z-30 flex h-[68px] items-center justify-between border-b border-border bg-background px-4 md:px-8">
           <div className="md:hidden flex items-center gap-2">
             <MobileDrawer userName={session.user.name} />
-            <Link href="/dashboard" className="flex items-center gap-2.5">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-xs font-bold text-white">
-                F
-              </div>
+            <Link href="/dashboard" className="flex items-center">
               <span className="text-sm font-bold">{familyName}</span>
             </Link>
           </div>
