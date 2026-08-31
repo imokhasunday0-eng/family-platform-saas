@@ -118,13 +118,14 @@ export default async function DashboardLayout({
           <div className="md:hidden flex items-center gap-2">
             <MobileDrawer userName={session.user.name} />
             <Link href="/dashboard" className="flex items-center">
-              <span className="text-sm font-bold">{familyName}</span>
+              <span className="text-[15px] font-extrabold uppercase tracking-[0.02em] text-primary">{familyName}</span>
             </Link>
           </div>
 
           <div className="hidden md:block">
             <p className="text-xs text-muted-foreground">
-              {familyName + " \u00b7 Private workspace"}
+              <span className="font-semibold text-primary">{familyName}</span>
+              {" \u00b7 Private workspace"}
             </p>
           </div>
 

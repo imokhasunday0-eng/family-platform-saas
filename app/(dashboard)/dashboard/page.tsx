@@ -10,8 +10,6 @@ import {
   Plus,
   ShoppingCart,
   Utensils,
-  MessageCircle,
-  Users,
 } from "lucide-react";
 import { headers } from "next/headers";
 import { auth } from "@/server/auth/auth";
@@ -201,35 +199,16 @@ export default async function DashboardPage() {
     <main className="min-h-screen">
       <div className="mx-auto max-w-[1400px] px-4 py-7 sm:px-6 md:px-8 md:py-10">
         {/* ═══════════ LEVEL 1: HERO ═══════════ */}
-        <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-700 via-violet-700 to-purple-900 px-6 py-7 text-white shadow-[0_8px_30px_rgba(79,70,229,0.18)] sm:px-8 sm:py-9">
+        <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-700 via-violet-700 to-purple-900 px-6 py-6 text-white shadow-[0_6px_24px_rgba(79,70,229,0.15)] sm:px-8 sm:py-7">
           {/* Ambient linework — barely-there, tone-on-tone */}
           <div aria-hidden className="pointer-events-none absolute inset-0">
             <CalendarDays
-              className="absolute -right-8 -top-10 h-56 w-56 text-white/[0.05] blur-[1px]"
-              strokeWidth={1}
-            />
-            <MessageCircle
-              className="absolute right-24 bottom-[-4rem] h-40 w-40 text-white/[0.04] blur-[1px]"
-              strokeWidth={1}
-            />
-            <Users
-              className="absolute right-[-3rem] top-24 h-32 w-32 text-white/[0.035] blur-[1px]"
+              className="absolute -right-6 -top-8 h-52 w-52 text-white/[0.06] blur-[1px]"
               strokeWidth={1}
             />
           </div>
           <div className="relative z-10 max-w-2xl">
-            <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
-              {familyDisplayName(membership.family.name)}
-            </h1>
-            <p className="mt-1 text-lg font-semibold text-indigo-100">
-              {greeting}.
-            </p>
-
-            <p className="mt-3 text-sm leading-6 text-indigo-200">
-              Plan your family&apos;s day, all in one place.
-            </p>
-
-            <div className="mt-5 flex items-center gap-4">
+            <div className="flex items-center gap-4">
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-indigo-200/90">
                 {dateLabel}
               </p>
@@ -240,6 +219,13 @@ export default async function DashboardPage() {
                 View calendar →
               </Link>
             </div>
+            <h1 className="mt-2 text-2xl font-extrabold tracking-tight text-white sm:text-3xl">
+              {greeting}.
+            </h1>
+
+            <p className="mt-2 text-sm leading-6 text-indigo-200">
+              Plan your family&apos;s day, all in one place.
+            </p>
           </div>
           <div className="pointer-events-none absolute -right-20 -top-28 h-72 w-72 rounded-full border border-white/10" />
           <div className="pointer-events-none absolute -right-8 -bottom-36 h-80 w-80 rounded-full border border-white/10" />
@@ -252,11 +238,11 @@ export default async function DashboardPage() {
             <div className="flex items-center gap-2.5">
               <span aria-hidden className="h-px w-6 rounded-full bg-primary/60" />
               <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-400 dark:text-slate-500">
-                Quick access
+                Quick access to your
               </p>
             </div>
             <h2 className="mt-1.5 text-xl font-bold tracking-[-0.02em] text-slate-900 dark:text-slate-100">
-              Family workspace
+              Family organizer
             </h2>
           </div>
 
