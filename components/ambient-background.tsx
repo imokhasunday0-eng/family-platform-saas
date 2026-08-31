@@ -18,20 +18,20 @@ export function AmbientBackground() {
       <div className="absolute inset-0 bg-gradient-to-br from-indigo-50 via-purple-50 to-teal-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950" />
 
       {/* Drifting blobs */}
-      <div className="absolute -left-32 -top-32 h-96 w-96 rounded-full bg-indigo-300/60 blur-3xl dark:bg-indigo-500/30 drift-1" />
-      <div className="absolute -right-24 top-1/4 h-80 w-80 rounded-full bg-violet-300/55 blur-3xl dark:bg-violet-500/28 drift-2" />
-      <div className="absolute -bottom-40 left-1/3 h-96 w-96 rounded-full bg-teal-300/55 blur-3xl dark:bg-teal-500/22 drift-3" />
+      <div className="absolute -left-32 -top-32 h-96 w-96 rounded-full bg-indigo-200/40 blur-3xl dark:bg-indigo-500/30 drift-1" />
+      <div className="absolute -right-24 top-1/4 h-80 w-80 rounded-full bg-violet-200/35 blur-3xl dark:bg-violet-500/28 drift-2" />
+      <div className="absolute -bottom-40 left-1/3 h-96 w-96 rounded-full bg-teal-200/35 blur-3xl dark:bg-teal-500/22 drift-3" />
 
       {/* Doodles — light mode */}
       <div
-        className="absolute inset-0 opacity-[0.28] dark:hidden animate-[doodle-float_60s_ease-in-out_infinite]"
-        style={{ backgroundImage: doodleUrl("#4f46e5"), backgroundSize: "400px 400px" }}
+        className="absolute inset-0 opacity-[0.06] dark:hidden animate-[doodle-float_60s_ease-in-out_infinite]"
+        style={{ backgroundImage: doodleUrl("#6b7280"), backgroundSize: "400px 400px" }}
       />
 
       {/* Doodles — dark mode */}
       <div
-        className="absolute inset-0 hidden opacity-[0.20] dark:block animate-[doodle-float_75s_ease-in-out_infinite]"
-        style={{ backgroundImage: doodleUrl("#a5b4fc"), backgroundSize: "400px 400px" }}
+        className="absolute inset-0 hidden opacity-[0.05] dark:block animate-[doodle-float_75s_ease-in-out_infinite]"
+        style={{ backgroundImage: doodleUrl("#9ca3af"), backgroundSize: "400px 400px" }}
       />
 
       {/* Fine grain to avoid banding */}
