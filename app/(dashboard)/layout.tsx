@@ -10,6 +10,8 @@ import { DashboardNav } from "@/components/dashboard-nav";
 import { MobileDrawer } from "@/components/mobile-drawer";
 import { NotificationBell } from "@/components/notification-bell";
 import { AmbientBackground } from "@/components/ambient-background";
+import { prisma } from "@/lib/prisma";
+import { familyDisplayName } from "@/lib/family-name";
 import { PresenceHeartbeat } from "@/components/presence-heartbeat";
 
 const bottomNav = [
@@ -25,6 +27,14 @@ export default async function DashboardLayout({
   const session = await auth.api.getSession({ headers: await headers() });
 
   if (!session?.user) redirect("/sign-in");
+
+  const membership = await prisma.familyMember.findFirst({
+    where: { userId: session.user.id },
+    include: { family: true },
+  });
+  const familyName = membership
+    ? familyDisplayName(membership.family.name)
+    : "Family Platform";
 
   const initials =
     session.user.name
@@ -43,15 +53,15 @@ export default async function DashboardLayout({
       <aside className="fixed inset-y-0 left-0 z-40 hidden w-[250px] border-r border-border bg-card md:flex md:flex-col">
         <div className="flex h-[76px] items-center border-b border-border px-6">
           <Link href="/dashboard" className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-sm font-bold text-white shadow-lg shadow-primary/30">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/90 text-sm font-bold text-white">
               F
             </div>
             <div>
               <p className="text-[15px] font-bold tracking-tight">
-                Family Platform
+                {familyName}
               </p>
               <p className="text-[11px] text-muted-foreground">
-                Family command center
+                Family Platform
               </p>
             </div>
           </Link>
@@ -111,13 +121,13 @@ export default async function DashboardLayout({
               <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-xs font-bold text-white">
                 F
               </div>
-              <span className="text-sm font-bold">Family Platform</span>
+              <span className="text-sm font-bold">{familyName}</span>
             </Link>
           </div>
 
           <div className="hidden md:block">
             <p className="text-xs text-muted-foreground">
-              Your family workspace
+              {familyName} \u00b7 Private workspace
             </p>
           </div>
 
