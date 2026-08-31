@@ -11,8 +11,10 @@ export default async function ChatPage() {
 
   const membership = await prisma.familyMember.findFirst({
     where: { userId: session.user.id },
+    include: { family: true },
   });
   if (!membership) return null;
+  const familyName = membership.family.name;
 
   let convo = await prisma.conversation.findFirst({
     where: { familyId: membership.familyId },
@@ -49,7 +51,7 @@ export default async function ChatPage() {
 
       {/* Chat fills everything between header and screen bottom */}
       <div className="min-h-0 flex-1">
-        <ChatView conversationId={convo.id} initialMessages={messages} />
+        <ChatView conversationId={convo.id} initialMessages={messages} familyName={familyName} />
       </div>
     </main>
   );

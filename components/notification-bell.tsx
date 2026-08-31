@@ -47,12 +47,12 @@ export function NotificationBell() {
   return (
     <Link
       href="/notifications"
-      className="relative flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted-foreground transition hover:bg-muted"
+      className="relative flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground transition hover:bg-muted hover:text-foreground"
       aria-label="Notifications"
     >
       <Bell className="h-[17px] w-[17px]" />
       {unread !== null && unread > 0 && (
-        <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-blue-600 px-1 text-[10px] font-bold leading-none text-white shadow-sm">
+        <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[9px] font-semibold leading-none text-primary-foreground">
           {unread > 99 ? "99+" : unread}
         </span>
       )}

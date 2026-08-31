@@ -127,7 +127,7 @@ export default async function DashboardLayout({
 
           <div className="hidden md:block">
             <p className="text-xs text-muted-foreground">
-              {familyName} \u00b7 Private workspace
+              {familyName + " \u00b7 Private workspace"}
             </p>
           </div>
 
@@ -137,7 +137,7 @@ export default async function DashboardLayout({
             <div className="hidden h-7 w-px bg-border sm:block" />
 
             <div className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-white">
+              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-white">
                 {initials}
               </div>
               <span className="hidden max-w-[120px] truncate text-xs font-semibold sm:block">

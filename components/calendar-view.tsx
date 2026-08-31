@@ -22,9 +22,11 @@ function toKey(d: Date) {
 export function CalendarView({
   events,
   todayKey,
+  familyName,
 }: {
   events: EventItem[];
   todayKey: string;
+  familyName: string;
 }) {
   const [cursor, setCursor] = useState(() => {
     const n = new Date();
@@ -147,7 +149,7 @@ export function CalendarView({
 
         {selectedEvents.length === 0 ? (
           <p className="mt-3 rounded-xl border border-dashed border-slate-200 dark:border-slate-700 p-4 text-center text-xs text-slate-400 dark:text-slate-500">
-            Nothing planned yet. Tap + to add an event!
+            Nothing planned yet. A clear day for the {familyName}.
           </p>
         ) : (
           <ul className="mt-3 space-y-2">

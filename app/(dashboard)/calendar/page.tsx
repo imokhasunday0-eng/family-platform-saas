@@ -9,8 +9,10 @@ export default async function CalendarPage() {
 
   const membership = await prisma.familyMember.findFirst({
     where: { userId: session.user.id },
+    include: { family: true },
   });
   if (!membership) return null;
+  const familyName = membership.family.name;
 
   const events = await prisma.calendarEvent.findMany({
     where: { familyId: membership.familyId },
@@ -44,7 +46,7 @@ export default async function CalendarPage() {
         </p>
 
         <div className="mt-6">
-          <CalendarView events={serialized} todayKey={todayKey} />
+          <CalendarView events={serialized} todayKey={todayKey} familyName={familyName} />
         </div>
       </div>
     </main>

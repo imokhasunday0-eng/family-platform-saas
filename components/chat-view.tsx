@@ -55,9 +55,11 @@ function dayLabel(iso: string) {
 export function ChatView({
   conversationId,
   initialMessages,
+  familyName,
 }: {
   conversationId: string;
   initialMessages: ChatMessage[];
+  familyName: string;
 }) {
   const [messages, setMessages] = useState<ChatMessage[]>(initialMessages);
   const [sending, setSending] = useState(false);
@@ -206,7 +208,7 @@ export function ChatView({
       >
         {messages.length === 0 ? (
           <p className="py-10 text-center text-xs text-slate-400 dark:text-slate-500">
-            No messages yet. Say hi to your family! 👋
+            No messages yet — say hello to the {familyName}.
           </p>
         ) : (
           rendered
