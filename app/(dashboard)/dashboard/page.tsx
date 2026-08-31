@@ -16,6 +16,7 @@ import { auth } from "@/server/auth/auth";
 import { prisma } from "@/lib/prisma";
 
 import { OverviewCard } from "@/components/cards/overview-card";
+import { OnlineToast } from "@/components/presence/online-toast";
 import { AnimatedGrid, AnimatedItem } from "@/components/animated-grid";
 
 export default async function DashboardPage() {
@@ -24,7 +25,17 @@ export default async function DashboardPage() {
 
   let membership = await prisma.familyMember.findFirst({
     where: { userId: session.user.id },
-    include: { family: true },
+    include: {
+      family: {
+        include: {
+          members: {
+            include: {
+              user: { select: { id: true, name: true, avatarUrl: true } },
+            },
+          },
+        },
+      },
+    },
   });
 
   if (!membership) {
@@ -37,12 +48,28 @@ export default async function DashboardPage() {
         familyId: family.id,
         role: "OWNER",
       },
-      include: { family: true },
+      include: {
+        family: {
+          include: {
+            members: {
+              include: {
+                user: { select: { id: true, name: true, avatarUrl: true } },
+              },
+            },
+          },
+        },
+      },
     });
     await prisma.settings.create({
       data: { familyId: family.id, timezone: "Africa/Lagos", currency: "NGN" },
     });
   }
+
+  const onlineMembers = membership.family.members.map((m) => ({
+    id: m.user.id,
+    name: m.user.name,
+    avatarUrl: m.user.avatarUrl,
+  }));
 
   // ---------- Dates ----------
   const now = new Date();
@@ -467,6 +494,7 @@ export default async function DashboardPage() {
           </div>
         </section>
       </div>
+      <OnlineToast members={onlineMembers} />
     </main>
   );
 }

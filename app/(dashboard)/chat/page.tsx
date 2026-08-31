@@ -2,6 +2,7 @@ import { headers } from "next/headers";
 import { auth } from "@/server/auth/auth";
 import { prisma } from "@/lib/prisma";
 import { ChatView } from "@/components/chat-view";
+import { OnlineDots } from "@/components/presence/online-dots";
 
 export const viewport = { interactiveWidget: "resizes-content" };
 
@@ -11,10 +12,25 @@ export default async function ChatPage() {
 
   const membership = await prisma.familyMember.findFirst({
     where: { userId: session.user.id },
-    include: { family: true },
+    include: {
+      family: {
+        include: {
+          members: {
+            include: {
+              user: { select: { id: true, name: true, avatarUrl: true } },
+            },
+          },
+        },
+      },
+    },
   });
   if (!membership) return null;
   const familyName = membership.family.name;
+  const members = membership.family.members.map((m) => ({
+    id: m.user.id,
+    name: m.user.name,
+    avatarUrl: m.user.avatarUrl,
+  }));
 
   let convo = await prisma.conversation.findFirst({
     where: { familyId: membership.familyId },
@@ -47,6 +63,7 @@ export default async function ChatPage() {
         <h1 className="text-lg font-bold tracking-tight text-slate-800 dark:text-slate-100">
           Family chat 💬
         </h1>
+        <OnlineDots members={members} />
       </div>
 
       {/* Chat fills everything between header and screen bottom */}

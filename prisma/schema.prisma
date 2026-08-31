@@ -332,6 +332,8 @@ model Message {
   conversationId String
   userId         String
   content        String
+  audioUrl       String?
+  kind           String   @default("text")
   createdAt      DateTime @default(now())
 
   conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)

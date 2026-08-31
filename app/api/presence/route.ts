@@ -49,5 +49,5 @@ export async function GET() {
     .filter((m) => m.user.lastSeen && m.user.lastSeen > cutoff)
     .map((m) => m.user.id);
 
-  return NextResponse.json({ online });
+  return NextResponse.json({ online, self: session.user.id });
 }
