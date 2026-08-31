@@ -218,12 +218,12 @@ export default async function DashboardPage() {
         </section>
 
         {/* ═══════════ LEVEL 2: QUICK STATS ═══════════ */}
-        <section className="mt-8">
-          <div className="mb-4">
+        <section className="mt-10 sm:mt-12">
+          <div className="mb-5">
             <p className="text-xs font-bold uppercase tracking-[0.14em] text-slate-400 dark:text-slate-500">
               Quick access
             </p>
-            <h2 className="mt-1 text-xl font-bold tracking-tight text-slate-800 dark:text-slate-100">
+            <h2 className="mt-1.5 text-xl font-bold tracking-[-0.02em] text-slate-900 dark:text-slate-100">
               Family workspace
             </h2>
           </div>
