@@ -14,6 +14,7 @@ interface OverviewCardProps {
   title: string;
   primary: string;   // the meaningful state: "Tonight · Chicken & rice"
   secondary?: string; // quiet supporting line: "No meals planned" etc.
+  progress?: number; // 0-100, renders subtle bar only when provided
   href: string;
   className?: string;
 }
@@ -56,6 +57,7 @@ export function OverviewCard({
   title,
   primary,
   secondary,
+  progress,
   href,
   className,
 }: OverviewCardProps) {
@@ -95,6 +97,14 @@ export function OverviewCard({
           <p className="mt-0.5 text-xs leading-5 text-slate-400 dark:text-slate-500">
             {secondary}
           </p>
+        )}
+        {progress !== undefined && (
+          <div className="mt-2.5 h-[3px] w-full overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800">
+            <div
+              className="h-full rounded-full bg-module-budget"
+              style={{ width: Math.min(Math.max(progress, 0), 100) + "%" }}
+            />
+          </div>
         )}
       </div>
     </Link>

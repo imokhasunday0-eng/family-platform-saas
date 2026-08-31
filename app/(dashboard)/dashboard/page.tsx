@@ -79,11 +79,15 @@ export default async function DashboardPage() {
       prisma.groceryItem.count({
         where: { purchased: false, list: { familyId: membership.familyId } },
       }),
-      prisma.expense.aggregate({
-        _sum: { amount: true },
+      prisma.budget.findFirst({
         where: {
-          budget: { familyId: membership.familyId },
-          date: { gte: startOfMonth },
+          familyId: membership.familyId,
+          month: startOfMonth.getMonth() + 1,
+          year: startOfMonth.getFullYear(),
+        },
+        include: {
+          expenses: { where: { date: { gte: startOfMonth } } },
+          incomes: true,
         },
       }),
       prisma.message.count({
@@ -105,7 +109,12 @@ export default async function DashboardPage() {
     where: { familyId: membership.familyId, date: { gte: startOfDay } },
   });
 
-  const monthSpent = Number(budgetAgg._sum.amount ?? 0);
+  const monthSpent = budgetAgg
+    ? budgetAgg.expenses.reduce((sum, e) => sum + Number(e.amount), 0)
+    : 0;
+  const monthIncome = budgetAgg
+    ? budgetAgg.incomes.reduce((sum, i) => sum + Number(i.amount), 0)
+    : 0;
 
   const formatTime = (d: Date) =>
     d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
@@ -150,7 +159,10 @@ export default async function DashboardPage() {
     {
       title: "Budget",
       primary: "\u20a6" + monthSpent.toLocaleString(),
-      secondary: "Spent this month",
+      secondary: monthIncome
+        ? "of \u20a6" + monthIncome.toLocaleString() + " this month"
+        : "Spent this month",
+      progress: monthIncome ? (monthSpent / monthIncome) * 100 : undefined,
       href: "/budget",
     },
     {
