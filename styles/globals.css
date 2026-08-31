@@ -53,6 +53,25 @@
     --chart-5: 200 80% 50%;
 
     --radius: 0.9rem;
+
+    /* ═══════════ PREMIUM TOKENS ═══════════ */
+    /* Elevation — exactly two levels */
+    --elev-1: 0 1px 3px rgb(0 0 0 / 0.05);
+    --elev-2: 0 2px 8px rgb(0 0 0 / 0.07);
+
+    /* Radius scale — one intent per component family */
+    --radius-hero: 1.5rem;    /* 24px */
+    --radius-card: 1rem;      /* 16px */
+    --radius-btn: 0.75rem;    /* 12px */
+    --radius-icon: 0.75rem;
+
+    /* Module accents — muted, color as identifier (HSL channels) */
+    --module-events: 234 89% 58%;
+    --module-meals: 38 92% 50%;
+    --module-chores: 258 90% 60%;
+    --module-grocery: 160 84% 39%;
+    --module-budget: 350 89% 60%;
+    --module-chat: 199 89% 48%;
   }
 
   .dark {

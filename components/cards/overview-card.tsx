@@ -22,33 +22,33 @@ interface OverviewCardProps {
 const styles: Record<string, { icon: any; tile: string; text: string }> = {
   "Today's Events": {
     icon: CalendarDays,
-    tile: "bg-indigo-500 text-white",
-    text: "group-hover:text-indigo-600",
+    tile: "bg-module-events text-white",
+    text: "group-hover:text-module-events",
   },
   "Meal Planner": {
     icon: Utensils,
-    tile: "bg-amber-500 text-white",
-    text: "group-hover:text-amber-600",
+    tile: "bg-module-meals text-white",
+    text: "group-hover:text-module-meals",
   },
   "Pending Chores": {
     icon: CheckSquare,
-    tile: "bg-violet-500 text-white",
-    text: "group-hover:text-violet-600",
+    tile: "bg-module-chores text-white",
+    text: "group-hover:text-module-chores",
   },
   "Grocery List": {
     icon: ShoppingCart,
-    tile: "bg-emerald-500 text-white",
-    text: "group-hover:text-emerald-600",
+    tile: "bg-module-grocery text-white",
+    text: "group-hover:text-module-grocery",
   },
   Budget: {
     icon: CircleDollarSign,
-    tile: "bg-rose-500 text-white",
-    text: "group-hover:text-rose-600",
+    tile: "bg-module-budget text-white",
+    text: "group-hover:text-module-budget",
   },
   "Family Chat": {
     icon: MessageCircle,
-    tile: "bg-sky-500 text-white",
-    text: "group-hover:text-sky-600",
+    tile: "bg-module-chat text-white",
+    text: "group-hover:text-module-chat",
   },
 };
 
@@ -66,14 +66,14 @@ export function OverviewCard({
     <Link
       href={href}
       className={cn(
-        "group relative flex h-full w-full flex-col rounded-2xl border border-slate-200/70 bg-white p-4 shadow-[0_1px_3px_rgba(0,0,0,0.05)] transition duration-200 hover:border-slate-300/80 hover:shadow-[0_2px_8px_rgba(0,0,0,0.07)] dark:border-white/10 dark:bg-slate-900 dark:hover:border-white/15",
+        "group relative flex h-full w-full flex-col rounded-card border border-slate-200/70 bg-white p-4 shadow-1 transition duration-200 hover:border-slate-300/80 hover:shadow-2 dark:border-white/10 dark:bg-slate-900 dark:hover:border-white/15",
         className
       )}
     >
       <div className="flex items-start justify-between">
         <div
           className={cn(
-            "flex h-10 w-10 items-center justify-center rounded-xl transition-colors duration-200",
+            "flex h-10 w-10 items-center justify-center rounded-icon transition-colors duration-200",
             s.tile
           )}
         >
