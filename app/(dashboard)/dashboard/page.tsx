@@ -203,8 +203,8 @@ export default async function DashboardPage() {
           {/* Ambient linework — barely-there, tone-on-tone */}
           <div aria-hidden className="pointer-events-none absolute inset-0">
             <CalendarDays
-              className="absolute -right-6 -top-8 h-52 w-52 text-white/[0.06] blur-[1px]"
-              strokeWidth={1}
+              className="absolute -right-6 -top-8 h-52 w-52 rotate-[-8deg] text-white/[0.06]"
+              strokeWidth={1.15}
             />
           </div>
           <div className="relative z-10 max-w-2xl">
