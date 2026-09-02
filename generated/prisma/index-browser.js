@@ -334,6 +334,8 @@ exports.Prisma.MessageScalarFieldEnum = {
   conversationId: 'conversationId',
   userId: 'userId',
   content: 'content',
+  audioUrl: 'audioUrl',
+  kind: 'kind',
   createdAt: 'createdAt'
 };
 

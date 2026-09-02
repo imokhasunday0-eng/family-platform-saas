@@ -28862,6 +28862,8 @@ export namespace Prisma {
     conversationId: string | null
     userId: string | null
     content: string | null
+    audioUrl: string | null
+    kind: string | null
     createdAt: Date | null
   }
 
@@ -28870,6 +28872,8 @@ export namespace Prisma {
     conversationId: string | null
     userId: string | null
     content: string | null
+    audioUrl: string | null
+    kind: string | null
     createdAt: Date | null
   }
 
@@ -28878,6 +28882,8 @@ export namespace Prisma {
     conversationId: number
     userId: number
     content: number
+    audioUrl: number
+    kind: number
     createdAt: number
     _all: number
   }
@@ -28888,6 +28894,8 @@ export namespace Prisma {
     conversationId?: true
     userId?: true
     content?: true
+    audioUrl?: true
+    kind?: true
     createdAt?: true
   }
 
@@ -28896,6 +28904,8 @@ export namespace Prisma {
     conversationId?: true
     userId?: true
     content?: true
+    audioUrl?: true
+    kind?: true
     createdAt?: true
   }
 
@@ -28904,6 +28914,8 @@ export namespace Prisma {
     conversationId?: true
     userId?: true
     content?: true
+    audioUrl?: true
+    kind?: true
     createdAt?: true
     _all?: true
   }
@@ -28985,6 +28997,8 @@ export namespace Prisma {
     conversationId: string
     userId: string
     content: string
+    audioUrl: string | null
+    kind: string
     createdAt: Date
     _count: MessageCountAggregateOutputType | null
     _min: MessageMinAggregateOutputType | null
@@ -29010,6 +29024,8 @@ export namespace Prisma {
     conversationId?: boolean
     userId?: boolean
     content?: boolean
+    audioUrl?: boolean
+    kind?: boolean
     createdAt?: boolean
     conversation?: boolean | ConversationDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -29022,6 +29038,8 @@ export namespace Prisma {
     conversationId?: boolean
     userId?: boolean
     content?: boolean
+    audioUrl?: boolean
+    kind?: boolean
     createdAt?: boolean
     conversation?: boolean | ConversationDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -29032,6 +29050,8 @@ export namespace Prisma {
     conversationId?: boolean
     userId?: boolean
     content?: boolean
+    audioUrl?: boolean
+    kind?: boolean
     createdAt?: boolean
     conversation?: boolean | ConversationDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -29042,10 +29062,12 @@ export namespace Prisma {
     conversationId?: boolean
     userId?: boolean
     content?: boolean
+    audioUrl?: boolean
+    kind?: boolean
     createdAt?: boolean
   }
 
-  export type MessageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "conversationId" | "userId" | "content" | "createdAt", ExtArgs["result"]["message"]>
+  export type MessageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "conversationId" | "userId" | "content" | "audioUrl" | "kind" | "createdAt", ExtArgs["result"]["message"]>
   export type MessageInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     conversation?: boolean | ConversationDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -29073,6 +29095,8 @@ export namespace Prisma {
       conversationId: string
       userId: string
       content: string
+      audioUrl: string | null
+      kind: string
       createdAt: Date
     }, ExtArgs["result"]["message"]>
     composites: {}
@@ -29504,6 +29528,8 @@ export namespace Prisma {
     readonly conversationId: FieldRef<"Message", 'String'>
     readonly userId: FieldRef<"Message", 'String'>
     readonly content: FieldRef<"Message", 'String'>
+    readonly audioUrl: FieldRef<"Message", 'String'>
+    readonly kind: FieldRef<"Message", 'String'>
     readonly createdAt: FieldRef<"Message", 'DateTime'>
   }
     
@@ -36855,6 +36881,8 @@ export namespace Prisma {
     conversationId: 'conversationId',
     userId: 'userId',
     content: 'content',
+    audioUrl: 'audioUrl',
+    kind: 'kind',
     createdAt: 'createdAt'
   };
 
@@ -38592,6 +38620,8 @@ export namespace Prisma {
     conversationId?: StringFilter<"Message"> | string
     userId?: StringFilter<"Message"> | string
     content?: StringFilter<"Message"> | string
+    audioUrl?: StringNullableFilter<"Message"> | string | null
+    kind?: StringFilter<"Message"> | string
     createdAt?: DateTimeFilter<"Message"> | Date | string
     conversation?: XOR<ConversationScalarRelationFilter, ConversationWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -38603,6 +38633,8 @@ export namespace Prisma {
     conversationId?: SortOrder
     userId?: SortOrder
     content?: SortOrder
+    audioUrl?: SortOrderInput | SortOrder
+    kind?: SortOrder
     createdAt?: SortOrder
     conversation?: ConversationOrderByWithRelationInput
     user?: UserOrderByWithRelationInput
@@ -38617,6 +38649,8 @@ export namespace Prisma {
     conversationId?: StringFilter<"Message"> | string
     userId?: StringFilter<"Message"> | string
     content?: StringFilter<"Message"> | string
+    audioUrl?: StringNullableFilter<"Message"> | string | null
+    kind?: StringFilter<"Message"> | string
     createdAt?: DateTimeFilter<"Message"> | Date | string
     conversation?: XOR<ConversationScalarRelationFilter, ConversationWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -38628,6 +38662,8 @@ export namespace Prisma {
     conversationId?: SortOrder
     userId?: SortOrder
     content?: SortOrder
+    audioUrl?: SortOrderInput | SortOrder
+    kind?: SortOrder
     createdAt?: SortOrder
     _count?: MessageCountOrderByAggregateInput
     _max?: MessageMaxOrderByAggregateInput
@@ -38642,6 +38678,8 @@ export namespace Prisma {
     conversationId?: StringWithAggregatesFilter<"Message"> | string
     userId?: StringWithAggregatesFilter<"Message"> | string
     content?: StringWithAggregatesFilter<"Message"> | string
+    audioUrl?: StringNullableWithAggregatesFilter<"Message"> | string | null
+    kind?: StringWithAggregatesFilter<"Message"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Message"> | Date | string
   }
 
@@ -40624,6 +40662,8 @@ export namespace Prisma {
   export type MessageCreateInput = {
     id?: string
     content: string
+    audioUrl?: string | null
+    kind?: string
     createdAt?: Date | string
     conversation: ConversationCreateNestedOneWithoutMessagesInput
     user: UserCreateNestedOneWithoutMessagesInput
@@ -40635,6 +40675,8 @@ export namespace Prisma {
     conversationId: string
     userId: string
     content: string
+    audioUrl?: string | null
+    kind?: string
     createdAt?: Date | string
     attachments?: AttachmentUncheckedCreateNestedManyWithoutMessageInput
   }
@@ -40642,6 +40684,8 @@ export namespace Prisma {
   export type MessageUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
+    audioUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    kind?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     conversation?: ConversationUpdateOneRequiredWithoutMessagesNestedInput
     user?: UserUpdateOneRequiredWithoutMessagesNestedInput
@@ -40653,6 +40697,8 @@ export namespace Prisma {
     conversationId?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
+    audioUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    kind?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     attachments?: AttachmentUncheckedUpdateManyWithoutMessageNestedInput
   }
@@ -40662,12 +40708,16 @@ export namespace Prisma {
     conversationId: string
     userId: string
     content: string
+    audioUrl?: string | null
+    kind?: string
     createdAt?: Date | string
   }
 
   export type MessageUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
+    audioUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    kind?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -40676,6 +40726,8 @@ export namespace Prisma {
     conversationId?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
+    audioUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    kind?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -42362,6 +42414,8 @@ export namespace Prisma {
     conversationId?: SortOrder
     userId?: SortOrder
     content?: SortOrder
+    audioUrl?: SortOrder
+    kind?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -42370,6 +42424,8 @@ export namespace Prisma {
     conversationId?: SortOrder
     userId?: SortOrder
     content?: SortOrder
+    audioUrl?: SortOrder
+    kind?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -42378,6 +42434,8 @@ export namespace Prisma {
     conversationId?: SortOrder
     userId?: SortOrder
     content?: SortOrder
+    audioUrl?: SortOrder
+    kind?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -45254,6 +45312,8 @@ export namespace Prisma {
   export type MessageCreateWithoutUserInput = {
     id?: string
     content: string
+    audioUrl?: string | null
+    kind?: string
     createdAt?: Date | string
     conversation: ConversationCreateNestedOneWithoutMessagesInput
     attachments?: AttachmentCreateNestedManyWithoutMessageInput
@@ -45263,6 +45323,8 @@ export namespace Prisma {
     id?: string
     conversationId: string
     content: string
+    audioUrl?: string | null
+    kind?: string
     createdAt?: Date | string
     attachments?: AttachmentUncheckedCreateNestedManyWithoutMessageInput
   }
@@ -45594,6 +45656,8 @@ export namespace Prisma {
     conversationId?: StringFilter<"Message"> | string
     userId?: StringFilter<"Message"> | string
     content?: StringFilter<"Message"> | string
+    audioUrl?: StringNullableFilter<"Message"> | string | null
+    kind?: StringFilter<"Message"> | string
     createdAt?: DateTimeFilter<"Message"> | Date | string
   }
 
@@ -48334,6 +48398,8 @@ export namespace Prisma {
   export type MessageCreateWithoutConversationInput = {
     id?: string
     content: string
+    audioUrl?: string | null
+    kind?: string
     createdAt?: Date | string
     user: UserCreateNestedOneWithoutMessagesInput
     attachments?: AttachmentCreateNestedManyWithoutMessageInput
@@ -48343,6 +48409,8 @@ export namespace Prisma {
     id?: string
     userId: string
     content: string
+    audioUrl?: string | null
+    kind?: string
     createdAt?: Date | string
     attachments?: AttachmentUncheckedCreateNestedManyWithoutMessageInput
   }
@@ -48619,6 +48687,8 @@ export namespace Prisma {
   export type MessageCreateWithoutAttachmentsInput = {
     id?: string
     content: string
+    audioUrl?: string | null
+    kind?: string
     createdAt?: Date | string
     conversation: ConversationCreateNestedOneWithoutMessagesInput
     user: UserCreateNestedOneWithoutMessagesInput
@@ -48629,6 +48699,8 @@ export namespace Prisma {
     conversationId: string
     userId: string
     content: string
+    audioUrl?: string | null
+    kind?: string
     createdAt?: Date | string
   }
 
@@ -48651,6 +48723,8 @@ export namespace Prisma {
   export type MessageUpdateWithoutAttachmentsInput = {
     id?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
+    audioUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    kind?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     conversation?: ConversationUpdateOneRequiredWithoutMessagesNestedInput
     user?: UserUpdateOneRequiredWithoutMessagesNestedInput
@@ -48661,6 +48735,8 @@ export namespace Prisma {
     conversationId?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
+    audioUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    kind?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -49396,6 +49472,8 @@ export namespace Prisma {
     id?: string
     conversationId: string
     content: string
+    audioUrl?: string | null
+    kind?: string
     createdAt?: Date | string
   }
 
@@ -49595,6 +49673,8 @@ export namespace Prisma {
   export type MessageUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
+    audioUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    kind?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     conversation?: ConversationUpdateOneRequiredWithoutMessagesNestedInput
     attachments?: AttachmentUpdateManyWithoutMessageNestedInput
@@ -49604,6 +49684,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     conversationId?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
+    audioUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    kind?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     attachments?: AttachmentUncheckedUpdateManyWithoutMessageNestedInput
   }
@@ -49612,6 +49694,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     conversationId?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
+    audioUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    kind?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -50385,12 +50469,16 @@ export namespace Prisma {
     id?: string
     userId: string
     content: string
+    audioUrl?: string | null
+    kind?: string
     createdAt?: Date | string
   }
 
   export type MessageUpdateWithoutConversationInput = {
     id?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
+    audioUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    kind?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutMessagesNestedInput
     attachments?: AttachmentUpdateManyWithoutMessageNestedInput
@@ -50400,6 +50488,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
+    audioUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    kind?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     attachments?: AttachmentUncheckedUpdateManyWithoutMessageNestedInput
   }
@@ -50408,6 +50498,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
+    audioUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    kind?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

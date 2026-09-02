@@ -13,7 +13,22 @@ export function OnlineToast({ members }: { members: Member[] }) {
   const [current, setCurrent] = useState<Member | null>(null);
   const [shown, setShown] = useState(false);
   const prevOnline = useRef<Set<string> | null>(null);
-  const lastShownAt = useRef<Map<string, number>>(new Map());
+  const offlineStreak = useRef<Map<string, number>>(new Map());
+
+  const cooldownMap = (): Map<string, number> => {
+    try {
+      return new Map(Object.entries(JSON.parse(sessionStorage.getItem("presence-cooldown") ?? "{}")));
+    } catch {
+      return new Map();
+    }
+  };
+  const markCooldown = (id: string) => {
+    try {
+      const map = cooldownMap();
+      map.set(id, Date.now());
+      sessionStorage.setItem("presence-cooldown", JSON.stringify(Object.fromEntries(map)));
+    } catch {}
+  };
 
   useEffect(() => {
     const active = new Set(
@@ -26,23 +41,33 @@ export function OnlineToast({ members }: { members: Member[] }) {
       return;
     }
 
+    // Track how long each person has been offline (anti-flap)
+    for (const id of active) offlineStreak.current.delete(id);
+    for (const id of members.map((m) => m.id)) {
+      if (!active.has(id) && !offlineStreak.current.has(id)) {
+        offlineStreak.current.set(id, Date.now());
+      }
+    }
+
+    // Only toast someone who was offline for >= 1 poll cycle (stable transition)
     const newcomers = [...active].filter(
-      (id) => !prevOnline.current!.has(id)
+      (id) =>
+        !prevOnline.current!.has(id) &&
+        offlineStreak.current.has(id) &&
+        Date.now() - offlineStreak.current.get(id)! >= 25000
     );
     prevOnline.current = active;
 
     if (newcomers.length === 0 || current) return;
 
     const now = Date.now();
+    const cooldowns = cooldownMap();
     const member = newcomers
       .map((id) => members.find((m) => m.id === id))
-      .find(
-        (m) =>
-          m && now - (lastShownAt.current.get(m.id) ?? 0) > COOLDOWN_MS
-      );
+      .find((m) => m && now - (cooldowns.get(m.id) ?? 0) > COOLDOWN_MS);
     if (!member) return;
 
-    lastShownAt.current.set(member.id, now);
+    markCooldown(member.id);
     setCurrent(member);
     setShown(true);
     const hide = setTimeout(() => {
